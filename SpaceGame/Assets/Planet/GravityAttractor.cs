@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class GravityAttractor : MonoBehaviour
 {
-    [SerializeField] float gravity = 9.81f;
+    [SerializeField] float gravity = 1.62f;
 
     public Vector3 gravityUp;
 

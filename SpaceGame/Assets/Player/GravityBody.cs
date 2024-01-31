@@ -15,6 +15,8 @@ public class GravityBody : MonoBehaviour
         bodyTransform = transform;
         rb = GetComponent<Rigidbody>();
 
+        //attractor = attractingBody.GetComponent<GravityAttractor>();
+
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.useGravity = false;
     }
@@ -22,6 +24,6 @@ public class GravityBody : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        attractor.AttractBody(gameObject);
+        attractor?.AttractBody(gameObject);
     }
 }
