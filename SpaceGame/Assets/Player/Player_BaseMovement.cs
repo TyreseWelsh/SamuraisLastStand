@@ -21,7 +21,6 @@ public class Player_BaseMovement : MonoBehaviour
     GameObject spawnedWeapon;
     bool canReflect = true;
 
-    //[SerializeField] GameObject currentPlanet;
     float horizontalInput;
     float verticalInput;
 
@@ -30,8 +29,6 @@ public class Player_BaseMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         mesh = GameObject.Find("PlayerMesh");
         gravityBody = GetComponent<GravityBody>();
-
-        //weaponSpawn = GameObject.Find("WeaponPos");
     }
 
     private void Start()

@@ -20,14 +20,21 @@ public class EnemyProjectile : MonoBehaviour
     Rigidbody rb;
     GravityBody gravityBody;
     SpeedState currentSpeedState = SpeedState.Stage0;
+    Color currentProjectileColour;
 
     public float speed = 18;
     const float MAX_SPEED =  52.0f;
     float damage = 5;
 
     int timesDeflected = 0;
+    [SerializeField] GameObject deflectionParticles;
 
     ParticleSystem.MainModule particleSystemMain;
+
+    private void Awake()
+    {
+        particleSystemMain = mainParticleSystem.main;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +54,7 @@ public class EnemyProjectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(gravityBody != null)
+        if(gravityBody.attractor != null)
         {
             Vector3 currentDistance = transform.position - gravityBody.attractor.transform.position;
 
@@ -75,7 +82,6 @@ public class EnemyProjectile : MonoBehaviour
 
         print("Hits= " + timesDeflected + " Current Speed= " + speed);
 
-        particleSystemMain = mainParticleSystem.main;
 
         if(timesDeflected == 1)
         {
@@ -97,6 +103,17 @@ public class EnemyProjectile : MonoBehaviour
         {
             SetToStage5();
         }
+
+        GameObject spawnedDeflectionParticles = Instantiate(deflectionParticles, transform.position, Quaternion.identity);
+        spawnedDeflectionParticles?.GetComponent<ChangeDeflectionColour>().SetColour(particleSystemMain.startColor);
+
+        GameObject.Destroy(spawnedDeflectionParticles, 1.0f);
+    }
+
+    IEnumerator ToDestroyDeflectionParticles()
+    {
+        yield return new WaitForSeconds(1);
+        
     }
 
     private void SetToStage0()
