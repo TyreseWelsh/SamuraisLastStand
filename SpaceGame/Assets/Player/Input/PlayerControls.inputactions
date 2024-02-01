@@ -6,7 +6,7 @@
             "id": "b7e45f80-0aaa-4d41-a241-fbefb377f55f",
             "actions": [
                 {
-                    "name": "Jump",
+                    "name": "Dash",
                     "type": "Button",
                     "id": "d06e444b-4dc0-4004-9479-1a9136ed0f48",
                     "expectedControlType": "Button",
@@ -41,7 +41,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseAndKeyboard",
-                    "action": "Jump",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

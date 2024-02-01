@@ -5,6 +5,12 @@ using UnityEngine;
 public class Deflection : MonoBehaviour
 {
     Vector3 deflectionDirection = Vector3.zero;
+    GameObject playerMesh;
+
+    private void Start()
+    {
+        playerMesh = GameObject.Find("PlayerMesh");
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -12,9 +18,9 @@ public class Deflection : MonoBehaviour
         {
             EnemyProjectile projectile = other.gameObject.GetComponent<EnemyProjectile>();
 
-            deflectionDirection = transform.parent.forward;
+            deflectionDirection = playerMesh.transform.forward;
 
-            other.gameObject.transform.Rotate(Quaternion.FromToRotation(other.gameObject.transform.forward, deflectionDirection).eulerAngles);
+            other.gameObject.transform.forward = deflectionDirection;
 
             projectile.Deflected();
         }

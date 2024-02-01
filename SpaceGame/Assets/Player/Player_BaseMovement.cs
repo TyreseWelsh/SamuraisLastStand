@@ -11,10 +11,13 @@ public class Player_BaseMovement : MonoBehaviour
     PlayerInput input;
     GravityBody gravityBody;
 
+    [SerializeField] Camera playerCamera;
+
     [SerializeField] float speed = 5;
-    [SerializeField] float turnSpeed = 500;
+    [SerializeField] float turnSpeed = 1000;
     Vector3 movementDirection;
     [SerializeField] float jumpHeight = 1400;
+    bool canDash = true;
 
     [SerializeField] GameObject weaponObj;
     [SerializeField] GameObject weaponSpawn;
@@ -29,6 +32,7 @@ public class Player_BaseMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         mesh = GameObject.Find("PlayerMesh");
         gravityBody = GetComponent<GravityBody>();
+        playerCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
     }
 
     private void Start()
@@ -50,15 +54,17 @@ public class Player_BaseMovement : MonoBehaviour
     {
         movementDirection = new Vector3(horizontalInput, 0, verticalInput);
 
-        if (transform.TransformDirection(movementDirection) != Vector3.zero)
+        if(gravityBody.attractor != null)
         {
-            Quaternion toRotation = Quaternion.LookRotation(transform.TransformDirection(movementDirection), gravityBody.attractor.gravityUp);
+            // Rotation to mouse code thanks to: https://forum.unity.com/threads/rotating-an-object-on-its-y-axis-while-it-is-relative-to-a-specific-normal.512838/
+            Vector3 mousePos = new Vector3();
+            mousePos = playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCamera.nearClipPlane));
 
-            mesh.transform.rotation = Quaternion.RotateTowards(mesh.transform.rotation, toRotation, turnSpeed * Time.deltaTime);
+            Vector3 lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.attractor.gravityUp);
+            mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.attractor.gravityUp);
+
+            rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
         }
-
-
-        rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
     }
 
     void OnMove(InputValue value)
@@ -67,9 +73,22 @@ public class Player_BaseMovement : MonoBehaviour
         verticalInput = value.Get<Vector2>().y;
     }
 
-    void OnJump(InputValue value)
+    void OnDash(InputValue value)
     {
-        rb.AddRelativeForce(Vector3.up * jumpHeight);
+        //rb.AddRelativeForce(Vector3.up * jumpHeight);
+        if (canDash)
+        {
+            canDash = false;
+
+            rb.AddRelativeForce(movementDirection * 1500);
+            StartCoroutine(WaitToResetDash());
+        }
+    }
+
+    IEnumerator WaitToResetDash()
+    {
+        yield return new WaitForSeconds(0.4f);
+        canDash = true;
     }
 
     void OnAttack(InputValue value)
