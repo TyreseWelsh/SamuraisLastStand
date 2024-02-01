@@ -14,11 +14,9 @@ public class Deflection : MonoBehaviour
 
             deflectionDirection = transform.parent.forward;
 
-            print(other.transform.up);
-
             other.gameObject.transform.Rotate(Quaternion.FromToRotation(other.gameObject.transform.forward, deflectionDirection).eulerAngles);
 
-            projectile.speed *= 1.05f;
+            projectile.Deflected();
         }
     }
 }

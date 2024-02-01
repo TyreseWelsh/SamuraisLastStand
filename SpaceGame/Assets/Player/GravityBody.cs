@@ -9,13 +9,12 @@ public class GravityBody : MonoBehaviour
 
     public GravityAttractor attractor;
 
+
     // Start is called before the first frame update
     void Start()
     {
         bodyTransform = transform;
         rb = GetComponent<Rigidbody>();
-
-        //attractor = attractingBody.GetComponent<GravityAttractor>();
 
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.useGravity = false;
@@ -25,5 +24,5 @@ public class GravityBody : MonoBehaviour
     void Update()
     {
         attractor?.AttractBody(gameObject);
-    }
+    } 
 }
