@@ -16,6 +16,11 @@ public class Player_BaseMovement : MonoBehaviour
     Vector3 movementDirection;
     [SerializeField] float jumpHeight = 1400;
 
+    [SerializeField] GameObject weaponObj;
+    [SerializeField] GameObject weaponSpawn;
+    GameObject spawnedWeapon;
+    bool canReflect = true;
+
     //[SerializeField] GameObject currentPlanet;
     float horizontalInput;
     float verticalInput;
@@ -25,6 +30,8 @@ public class Player_BaseMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         mesh = GameObject.Find("PlayerMesh");
         gravityBody = GetComponent<GravityBody>();
+
+        //weaponSpawn = GameObject.Find("WeaponPos");
     }
 
     private void Start()
@@ -35,8 +42,26 @@ public class Player_BaseMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Mouse.current.leftButton.isPressed)
+        {
+            Debug.DrawRay(transform.position, mesh.transform.forward * 2.25f, Color.blue);
+        }
 
+    }
+
+    private void FixedUpdate()
+    {
+        movementDirection = new Vector3(horizontalInput, 0, verticalInput);
+
+        if (transform.TransformDirection(movementDirection) != Vector3.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(transform.TransformDirection(movementDirection), gravityBody.attractor.gravityUp);
+
+            mesh.transform.rotation = Quaternion.RotateTowards(mesh.transform.rotation, toRotation, turnSpeed * Time.deltaTime);
+        }
+
+
+        rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
     }
 
     void OnMove(InputValue value)
@@ -50,19 +75,23 @@ public class Player_BaseMovement : MonoBehaviour
         rb.AddRelativeForce(Vector3.up * jumpHeight);
     }
 
-    private void FixedUpdate()
+    void OnAttack(InputValue value)
     {
-        movementDirection = new Vector3(horizontalInput, 0, verticalInput);
-        //movementDirection.Normalize();
-
-        if (transform.TransformDirection(movementDirection) != Vector3.zero)
+        if(canReflect)
         {
-            Quaternion toRotation = Quaternion.LookRotation(transform.TransformDirection(movementDirection), gravityBody.attractor.gravityUp);
+            spawnedWeapon = Instantiate(weaponObj, weaponSpawn.transform, false);
+            spawnedWeapon.transform.localPosition = Vector3.zero;
+            canReflect = false;
 
-            mesh.transform.rotation = Quaternion.RotateTowards(mesh.transform.rotation, toRotation, turnSpeed * Time.deltaTime);
+            StartCoroutine(WaitToDestroyWeapon());
         }
-        
+    }
 
-        rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
+    IEnumerator WaitToDestroyWeapon()
+    {
+        yield return new WaitForSeconds(0.25f);
+
+        GameObject.Destroy(spawnedWeapon);
+        canReflect = true;
     }
 }

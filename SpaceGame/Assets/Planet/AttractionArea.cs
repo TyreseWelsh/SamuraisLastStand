@@ -8,8 +8,6 @@ public class AttractionArea : MonoBehaviour
     {
         if (other.gameObject.GetComponent<GravityBody>() != null)
         {
-            print("Changing planet");
-
             other.gameObject.GetComponent<GravityBody>().attractor = gameObject.GetComponent<GravityAttractor>();
         }
     }
