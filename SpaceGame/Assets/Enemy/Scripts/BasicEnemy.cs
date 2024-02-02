@@ -1,19 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class BasicEnemy : MonoBehaviour, IDamageable
 {
+    Rigidbody rb;
     NavMeshAgent navMeshAgent;
     Animator animator;
     GravityBody gravityBody;
 
     Transform target;
-    float shootingDistance;
-    float fireTimer = 0.0f;
-    float fireRate = 4.0f;
-    bool canFire = true;
+    float attackRange = 10;
+    float attackTimer = 0.0f;
+    float attackRate = 4.0f;
+    bool canattack = true;
+
+    float moveSpeed = 5.0f;
+
     [SerializeField] Transform projectileStart;
     [SerializeField] GameObject projectile;
     List<Coroutine> fireCoroutines = new List<Coroutine>();
@@ -26,81 +33,65 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     // Start is called before the first frame update
     void Start()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        rb = GetComponent<Rigidbody>();
         gravityBody = GetComponent<GravityBody>();
         target = GameObject.Find("Player")?.transform;
 
-        shootingDistance = navMeshAgent.stoppingDistance;
+        //shootingDistance = navMeshAgent.stoppingDistance;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(target != null)
+
+    }
+
+    private void FixedUpdate()
+    {
+        if (target != null && gravityBody.attractor != null)
         {
-            bool inRange = Vector3.Distance(transform.position, target.position) <= shootingDistance;
+            bool inRange = Vector3.Distance(transform.position, target.position) <= attackRange;
 
             if (inRange)
             {
-                LookAtTarget();
-                //fireCoroutines.Add(StartCoroutine(WaitToFire()));
                 FireProjectile();
             }
             else
             {
-                UpdatePath();
-                //foreach (Coroutine coroutine in fireCoroutines)
-                //{
-                //    StopCoroutine(coroutine);
-                //}
+                MoveTowardsTarget();
             }
+
+            LookAtTarget();
         }
     }
 
     private void LookAtTarget()
     {
-        lookDirection = Vector3.ProjectOnPlane(target.position - transform.position, gravityBody.attractor.gravityUp);
-        transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.attractor.gravityUp);
+        lookDirection = Vector3.ProjectOnPlane(target.position - transform.position, gravityBody.gravityUp);
+        transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
     }
 
-    private void UpdatePath()
+    private void MoveTowardsTarget()
     {
-        if(Time.time > pathUpdateDeadline)
-        {
-            //print("Updating path...");
-            pathUpdateDeadline = Time.time + pathUpdateDelay;
-            navMeshAgent.SetDestination(target.position);
-        }
+        Debug.DrawRay(transform.position, transform.forward * 10);
+        rb.MovePosition(transform.position + transform.forward * 10 * Time.deltaTime);
     }
 
     private void FireProjectile()
     {
-        fireTimer += Time.deltaTime;
+        attackTimer += Time.deltaTime;
 
-        if (fireTimer >= fireRate)
+        if (attackTimer >= attackRate)
         {
             print(projectileStart.transform.position);
-            Instantiate(projectile, projectileStart.transform.position, Quaternion.LookRotation(lookDirection, gravityBody.attractor.gravityUp));
-            fireTimer = 0.0f;
+            GameObject newProjectile = Instantiate(projectile, projectileStart.transform.position, Quaternion.identity);
+            newProjectile.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+            attackTimer = 0.0f;
         }
-    }
-
-    IEnumerator WaitToFire()
-    {
-        yield return new WaitForSeconds(fireRate);
-        canFire = true;
-
-        if(canFire)
-        {
-            //Instantiate(projectile, transform.position, Quaternion.LookRotation(lookDirection, gravityBody.attractor.gravityUp));
-            canFire = false;
-        }
-
-        StartCoroutine(WaitToFire());
     }
 
     public void Damage()
     {
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

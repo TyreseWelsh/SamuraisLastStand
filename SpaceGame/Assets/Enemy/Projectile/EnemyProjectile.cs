@@ -72,7 +72,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         timesDeflected++;
 
-        speed *= 1.16f;
+        speed *= 1.15f;
         
         if (speed >= MAX_SPEED)
         {
@@ -83,23 +83,23 @@ public class EnemyProjectile : MonoBehaviour
         print("Hits= " + timesDeflected + " Current Speed= " + speed);
 
 
-        if(timesDeflected == 1)
+        if(timesDeflected == 2 || timesDeflected == 3)
         {
             SetToStage1();
         }
-        else if(timesDeflected >= 2 && timesDeflected < 4)
+        else if(timesDeflected >= 4 && timesDeflected < 6)
         {
             SetToStage2();
         }
-        else if(timesDeflected >= 4 && timesDeflected < 6)
+        else if(timesDeflected >= 6 && timesDeflected < 8)
         {
             SetToStage3();
         }
-        else if (timesDeflected >= 6 && timesDeflected < 8)
+        else if (timesDeflected >= 8 && timesDeflected < 10)
         {
             SetToStage4();
         }
-        else if (timesDeflected >= 8)
+        else if (timesDeflected >= 10)
         {
             SetToStage5();
         }

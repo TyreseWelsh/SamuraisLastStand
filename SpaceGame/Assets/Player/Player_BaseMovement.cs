@@ -11,12 +11,11 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     PlayerInput input;
     GravityBody gravityBody;
 
-    [SerializeField] Camera playerCamera;
+    Camera playerCamera;
 
-    [SerializeField] float speed = 5;
+    float speed = 8;
     [SerializeField] float turnSpeed = 1000;
     Vector3 movementDirection;
-    [SerializeField] float jumpHeight = 1400;
     bool canDash = true;
 
     [SerializeField] GameObject weaponObj;
@@ -56,14 +55,15 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
         if(gravityBody.attractor != null)
         {
+            rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
+
             // Rotation to mouse code thanks to: https://forum.unity.com/threads/rotating-an-object-on-its-y-axis-while-it-is-relative-to-a-specific-normal.512838/
-            Vector3 mousePos = new Vector3();
+            Vector3 mousePos;
             mousePos = playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCamera.nearClipPlane));
 
-            Vector3 lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.attractor.gravityUp);
-            mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.attractor.gravityUp);
+            Vector3 lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.gravityUp);
 
-            rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
+            mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
         }
     }
 
