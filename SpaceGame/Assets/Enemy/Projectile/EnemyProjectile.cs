@@ -155,4 +155,16 @@ public class EnemyProjectile : MonoBehaviour
         particleSystemMain.startColor = stageColours[5];
         damage = 60;
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && collision.gameObject.GetComponent<IDamageable>() != null)          // If colliding object is player and implements IDamageable, deal damage
+        {
+            collision.gameObject.GetComponent<IDamageable>().Damage();
+        }
+        else if(collision.gameObject.GetComponent<IDamageable>() != null && currentSpeedState != SpeedState.Stage0)         // If colliding object implements IDamageable and the current speed stage is not 0, deal damage
+        {                                                                                                                   // Done after player check because if colliding object is Player, it will stop their before this
+            collision.gameObject.GetComponent<IDamageable>().Damage();
+        }
+    }
 }

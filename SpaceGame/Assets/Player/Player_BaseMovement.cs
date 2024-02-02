@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player_BaseMovement : MonoBehaviour
+public class Player_BaseMovement : MonoBehaviour, IDamageable
 {
     Rigidbody rb;
     GameObject mesh;
@@ -105,9 +105,15 @@ public class Player_BaseMovement : MonoBehaviour
 
     IEnumerator WaitToDestroyWeapon()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.10f);
 
-        GameObject.Destroy(spawnedWeapon);
+        Destroy(spawnedWeapon);
         canReflect = true;
+    }
+
+    public void Damage()
+    {
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
