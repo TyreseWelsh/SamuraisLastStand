@@ -114,6 +114,6 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     public void Damage()
     {
         //Destroy(gameObject);
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 }
