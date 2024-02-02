@@ -6,7 +6,7 @@ public class GravityBody : MonoBehaviour
 {
     Transform bodyTransform;
     Rigidbody rb;
-    public Vector3 gravityUp = Vector3.zero;
+    [HideInInspector] public Vector3 gravityUp = Vector3.zero;
 
     public GravityAttractor attractor;
 

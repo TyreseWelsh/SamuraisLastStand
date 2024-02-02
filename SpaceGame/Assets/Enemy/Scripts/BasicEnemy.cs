@@ -12,11 +12,12 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     NavMeshAgent navMeshAgent;
     Animator animator;
     GravityBody gravityBody;
+    GameObject spawner;
 
     Transform target;
-    float attackRange = 10;
+    float attackRange = 12;
     float attackTimer = 0.0f;
-    float attackRate = 4.0f;
+    float attackRate = 2.5f;
     bool canattack = true;
 
     float moveSpeed = 5.0f;
@@ -36,6 +37,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         rb = GetComponent<Rigidbody>();
         gravityBody = GetComponent<GravityBody>();
         target = GameObject.Find("Player")?.transform;
+        spawner = GameObject.Find("EnemySpawner");
 
         //shootingDistance = navMeshAgent.stoppingDistance;
     }
@@ -92,6 +94,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     public void Damage()
     {
+        spawner.GetComponent<EnemySpawner>().numCurrentEnemies--;
         Destroy(gameObject);
     }
 }

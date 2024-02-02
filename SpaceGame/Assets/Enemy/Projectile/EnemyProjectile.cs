@@ -22,7 +22,7 @@ public class EnemyProjectile : MonoBehaviour
     SpeedState currentSpeedState = SpeedState.Stage0;
     Color currentProjectileColour;
 
-    public float speed = 18;
+    public float speed = 20;
     const float MAX_SPEED =  52.0f;
     float damage = 5;
 
@@ -30,6 +30,9 @@ public class EnemyProjectile : MonoBehaviour
     [SerializeField] GameObject deflectionParticles;
 
     ParticleSystem.MainModule particleSystemMain;
+
+    const int DESTRUCTION_TIME = 10;
+    float destructionTimer;
 
     private void Awake()
     {
@@ -49,7 +52,11 @@ public class EnemyProjectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        destructionTimer += Time.deltaTime;
+        if(destructionTimer >= DESTRUCTION_TIME )
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void FixedUpdate()
@@ -71,6 +78,7 @@ public class EnemyProjectile : MonoBehaviour
     public void Deflected()
     {
         timesDeflected++;
+        destructionTimer = 0.0f;
 
         speed *= 1.15f;
         
@@ -108,12 +116,6 @@ public class EnemyProjectile : MonoBehaviour
         spawnedDeflectionParticles?.GetComponent<ChangeDeflectionColour>().SetColour(particleSystemMain.startColor);
 
         GameObject.Destroy(spawnedDeflectionParticles, 1.0f);
-    }
-
-    IEnumerator ToDestroyDeflectionParticles()
-    {
-        yield return new WaitForSeconds(1);
-        
     }
 
     private void SetToStage0()

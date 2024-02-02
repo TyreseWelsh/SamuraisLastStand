@@ -59,7 +59,7 @@ Transform:
   m_GameObject: {fileID: 3106277402211392718}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 16, z: 0}
+  m_LocalPosition: {x: 0, y: 13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 7949404528146334483}
   - component: {fileID: 2832020020629041607}
   - component: {fileID: 6879557197916064757}
+  - component: {fileID: 3827212290141827597}
   m_Layer: 0
   m_Name: Nose
   m_TagString: Untagged
@@ -251,6 +252,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3827212290141827597
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3624336902724714755}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2.0000002
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6349418510981714306
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,11 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011b625d0a9cdb44eb8d8a7efb710a9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 0}
-  gravityBody: {fileID: 0}
-  playerCamera: {fileID: 0}
-  speed: 18
-  turnSpeed: 500
+  turnSpeed: 1000
   weaponObj: {fileID: 4548100253635077211, guid: 4a492320a8cbc7b488dc6f5e760c7e3c,
     type: 3}
   weaponSpawn: {fileID: 36020953416748490}
@@ -487,4 +507,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 203eaf59e707c5341837e3accdf5f3f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravityUp: {x: 0, y: 0, z: 0}
   attractor: {fileID: 0}

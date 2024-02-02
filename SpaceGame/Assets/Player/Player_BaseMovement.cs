@@ -105,7 +105,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     IEnumerator WaitToDestroyWeapon()
     {
-        yield return new WaitForSeconds(0.10f);
+        yield return new WaitForSeconds(0.40f);
 
         Destroy(spawnedWeapon);
         canReflect = true;
