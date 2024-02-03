@@ -10,7 +10,6 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     GameObject mesh;
     PlayerInput input;
     GravityBody gravityBody;
-
     Camera playerCamera;
 
     float speed = 8;
@@ -23,6 +22,8 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     GameObject spawnedWeapon;
     bool canReflect = true;
 
+    ScoringSystem scoringSystem;
+
     float horizontalInput;
     float verticalInput;
 
@@ -32,6 +33,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         mesh = GameObject.Find("PlayerMesh");
         gravityBody = GetComponent<GravityBody>();
         playerCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
+        scoringSystem = GameObject.Find("ScoreManager")?.GetComponent<ScoringSystem>();
     }
 
     private void Start()
@@ -113,6 +115,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     public void Damage()
     {
+        scoringSystem.ResetTempScore();
         //Destroy(gameObject);
         //gameObject.SetActive(false);
     }

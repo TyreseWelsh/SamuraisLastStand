@@ -6,10 +6,12 @@ public class Deflection : MonoBehaviour
 {
     Vector3 deflectionDirection = Vector3.zero;
     GameObject playerMesh;
+    ScoringSystem scoringSystem;
 
     private void Start()
     {
         playerMesh = GameObject.Find("PlayerMesh");
+        scoringSystem = GameObject.Find("ScoreManager")?.GetComponent<ScoringSystem>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,7 +23,9 @@ public class Deflection : MonoBehaviour
             deflectionDirection = playerMesh.transform.forward;
 
             other.gameObject.transform.forward = deflectionDirection;
+            other.gameObject.transform.position = gameObject.transform.position;
 
+            scoringSystem.IncreaseTempScore(50);
             projectile.Deflected();
         }
     }

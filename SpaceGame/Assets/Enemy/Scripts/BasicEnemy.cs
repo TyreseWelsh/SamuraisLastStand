@@ -13,6 +13,8 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     Animator animator;
     GravityBody gravityBody;
     GameObject spawner;
+    GameObject scoreManager;
+    ScoringSystem scoringSystem;
 
     Transform target;
     float attackRange = 12;
@@ -38,6 +40,8 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         gravityBody = GetComponent<GravityBody>();
         target = GameObject.Find("Player")?.transform;
         spawner = GameObject.Find("EnemySpawner");
+        scoreManager = GameObject.Find("ScoreManager");
+        scoringSystem = scoreManager?.GetComponent<ScoringSystem>();
 
         //shootingDistance = navMeshAgent.stoppingDistance;
     }
@@ -94,6 +98,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     public void Damage()
     {
+        scoringSystem?.BankScore();
         spawner.GetComponent<EnemySpawner>().numCurrentEnemies--;
         Destroy(gameObject);
     }
