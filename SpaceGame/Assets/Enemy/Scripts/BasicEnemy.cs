@@ -9,8 +9,6 @@ using UnityEngine.AI;
 public class BasicEnemy : MonoBehaviour, IDamageable
 {
     Rigidbody rb;
-    NavMeshAgent navMeshAgent;
-    Animator animator;
     GravityBody gravityBody;
     GameObject spawner;
     GameObject scoreManager;
@@ -22,14 +20,10 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     float attackRate = 2.5f;
     bool canattack = true;
 
-    float moveSpeed = 5.0f;
+    float moveSpeed = 10.0f;
 
     [SerializeField] Transform projectileStart;
     [SerializeField] GameObject projectile;
-    List<Coroutine> fireCoroutines = new List<Coroutine>();
-
-    float pathUpdateDelay = 0.2f;
-    float pathUpdateDeadline = 0.0f;
 
     Vector3 lookDirection = Vector3.zero;
 
@@ -42,14 +36,6 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         spawner = GameObject.Find("EnemySpawner");
         scoreManager = GameObject.Find("ScoreManager");
         scoringSystem = scoreManager?.GetComponent<ScoringSystem>();
-
-        //shootingDistance = navMeshAgent.stoppingDistance;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void FixedUpdate()
@@ -79,8 +65,8 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     private void MoveTowardsTarget()
     {
-        Debug.DrawRay(transform.position, transform.forward * 10);
-        rb.MovePosition(transform.position + transform.forward * 10 * Time.deltaTime);
+        Debug.DrawRay(transform.position, transform.forward * moveSpeed);
+        rb.MovePosition(transform.position + transform.forward * moveSpeed * Time.deltaTime);
     }
 
     private void FireProjectile()

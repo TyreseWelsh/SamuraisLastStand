@@ -9,7 +9,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] GameObject enemy;
 
     const int BASE_ENEMIES_TO_SPAWN = 1;
-    int enemiesToSpawn = 1;
+    int enemiesToSpawn = 0;
     float spawnTimer = 0.0f;
     const int BASE_SPAWN_TIME = 15;
     int spawnTime = 0;

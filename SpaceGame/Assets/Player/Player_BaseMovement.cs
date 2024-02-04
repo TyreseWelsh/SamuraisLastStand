@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,12 +10,14 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     Rigidbody rb;
     GameObject mesh;
     PlayerInput input;
-    GravityBody gravityBody;
+    public GravityBody gravityBody;
     Camera playerCamera;
 
+    int health = 5;
+    [SerializeField] TextMeshProUGUI healthText;
     float speed = 8;
     [SerializeField] float turnSpeed = 1000;
-    Vector3 movementDirection;
+    public Vector3 movementDirection;
     bool canDash = true;
 
     [SerializeField] GameObject weaponObj;
@@ -44,11 +47,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        if (Mouse.current.leftButton.isPressed)
-        {
-            Debug.DrawRay(transform.position, mesh.transform.forward * 2.25f, Color.blue);
-        }
-
+        healthText.text = "Health: " + health.ToString();
     }
 
     private void FixedUpdate()
@@ -116,7 +115,11 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     public void Damage()
     {
         scoringSystem.ResetTempScore();
-        //Destroy(gameObject);
-        //gameObject.SetActive(false);
+        health--;
+
+        if(health <= 0)
+        {
+            print("Player Death");
+        }
     }
 }
