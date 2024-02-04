@@ -21,7 +21,7 @@ public class ScoringSystem : MonoBehaviour
         {
             ResetTempScore();
         }
-        print("Time to lose score: " + (LOSE_SCORE_TIME - loseScoreTimer).ToString());
+        //print("Time to lose score: " + (LOSE_SCORE_TIME - loseScoreTimer).ToString());
 
         tempScoreText.text = ("+ " + tempScore);
         bankedScoreText.text = ("SCORE: " + bankedScore);
@@ -32,14 +32,14 @@ public class ScoringSystem : MonoBehaviour
         tempScore += score;
         loseScoreTimer = 0;
         // Play text animation where it gets bigger for an instant then returns to normal size, and maybe for certain number thresholds, the normal size will be increased
-        print("Scoring: Increase Temp Score...");
+        //print("Scoring: Increase Temp Score...");
     }
 
     public void ResetTempScore()
     {
         // Play text animation where score rapidly decreases to 0
         tempScore = 0;
-        print("Scoring: Reset Temp Score...");
+        //print("Scoring: Reset Temp Score...");
     }
 
     public void BankScore()
@@ -47,6 +47,6 @@ public class ScoringSystem : MonoBehaviour
         bankedScore += tempScore;
         tempScore = 0;
         loseScoreTimer = 0;
-        print("Scoring: Banked Score...");
+        //print("Scoring: Banked Score...");
     }
 }

@@ -47,7 +47,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        healthText.text = "Health: " + health.ToString();
+        healthText.text = "HEALTH: " + health.ToString();
     }
 
     private void FixedUpdate()
