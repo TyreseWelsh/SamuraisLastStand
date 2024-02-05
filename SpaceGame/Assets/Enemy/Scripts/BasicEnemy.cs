@@ -15,6 +15,8 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     GameObject scoreManager;
     ScoringSystem scoringSystem;
 
+    bool alive = true;
+
     Transform target;
     float attackRange = 12;
     float attackTimer = 0.0f;
@@ -42,7 +44,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
-        if (target != null && gravityBody.attractor != null)
+        if (alive && target != null && gravityBody.attractor != null)
         {
             bool inRange = Vector3.Distance(transform.position, target.position) <= attackRange;
             animator.SetBool("InRange", inRange);
@@ -57,6 +59,10 @@ public class BasicEnemy : MonoBehaviour, IDamageable
             }
 
             LookAtTarget();
+        }
+        else
+        {
+            StopCoroutine(FireProjectile());
         }
     }
 
@@ -96,8 +102,26 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     public void Damage()
     {
+        Death();
+    }
+
+    private void Death()
+    {
+        alive = false;
+        LayerMask ignoreLayers = LayerMask.GetMask("Character", "EnemyProjectile");
+        GetComponent<CapsuleCollider>().excludeLayers = ignoreLayers;
+        animator.SetTrigger("Death");
         scoringSystem?.BankScore();
         spawner.GetComponent<EnemySpawner>().numCurrentEnemies--;
+
+        StartCoroutine(WaitForDeath());
+    }
+
+    IEnumerator WaitForDeath()
+    {
+        yield return new WaitForSeconds(2.0f);
+
         Destroy(gameObject);
     }
+
 }
