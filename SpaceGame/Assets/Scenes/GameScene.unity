@@ -763,6 +763,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7866649734098917443, guid: 96edf71a946b4a346a1a54085b287f08,
         type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 3813495908088469083, guid: f949246467a5b404ca87e6444eacab76,
+        type: 3}
+    - target: {fileID: 7866649734098917443, guid: 96edf71a946b4a346a1a54085b287f08,
+        type: 3}
       propertyPath: planet
       value: 
       objectReference: {fileID: 2042016865}
@@ -782,47 +788,47 @@ PrefabInstance:
     - target: {fileID: 1256504261154769637, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.x
-      value: -3.7105827
+      value: -3.5869403
       objectReference: {fileID: 0}
     - target: {fileID: 1256504261154769637, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.y
-      value: -1.3237796
+      value: -1.2796692
       objectReference: {fileID: 0}
     - target: {fileID: 1256504261154769637, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.z
-      value: -1.7299185
+      value: -1.672275
       objectReference: {fileID: 0}
     - target: {fileID: 1627821745894463450, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.x
-      value: -3.7105827
+      value: -3.5869403
       objectReference: {fileID: 0}
     - target: {fileID: 1627821745894463450, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.y
-      value: -1.3237796
+      value: -1.2796692
       objectReference: {fileID: 0}
     - target: {fileID: 1627821745894463450, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.z
-      value: -1.7299185
+      value: -1.672275
       objectReference: {fileID: 0}
     - target: {fileID: 4882086201321745919, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.x
-      value: -3.7105827
+      value: -3.5869403
       objectReference: {fileID: 0}
     - target: {fileID: 4882086201321745919, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.y
-      value: -1.3237796
+      value: -1.2796692
       objectReference: {fileID: 0}
     - target: {fileID: 4882086201321745919, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.z
-      value: -1.7299185
+      value: -1.672275
       objectReference: {fileID: 0}
     - target: {fileID: 6217797326144075174, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
@@ -834,35 +840,40 @@ PrefabInstance:
       propertyPath: healthText
       value: 
       objectReference: {fileID: 226964933}
+    - target: {fileID: 6643901060793729450, guid: f1dc0c074dde95f4287394c924b1a3c7,
+        type: 3}
+      propertyPath: weaponSpawn
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7227563243409158541, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.x
-      value: -3.7105827
+      value: -3.5869403
       objectReference: {fileID: 0}
     - target: {fileID: 7227563243409158541, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.y
-      value: -1.3237796
+      value: -1.2796692
       objectReference: {fileID: 0}
     - target: {fileID: 7227563243409158541, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.z
-      value: -1.7299185
+      value: -1.672275
       objectReference: {fileID: 0}
     - target: {fileID: 7395892001712258773, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.x
-      value: -3.7105827
+      value: -3.5869403
       objectReference: {fileID: 0}
     - target: {fileID: 7395892001712258773, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.y
-      value: -1.3237796
+      value: -1.2796692
       objectReference: {fileID: 0}
     - target: {fileID: 7395892001712258773, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.z
-      value: -1.7299185
+      value: -1.672275
       objectReference: {fileID: 0}
     - target: {fileID: 8197465485260761236, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
@@ -872,17 +883,17 @@ PrefabInstance:
     - target: {fileID: 8439346380298418500, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.x
-      value: -3.7105827
+      value: -3.5869403
       objectReference: {fileID: 0}
     - target: {fileID: 8439346380298418500, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.y
-      value: -1.3237796
+      value: -1.2796692
       objectReference: {fileID: 0}
     - target: {fileID: 8439346380298418500, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[4].m_Value.z
-      value: -1.7299185
+      value: -1.672275
       objectReference: {fileID: 0}
     - target: {fileID: 8963327313524913533, guid: f1dc0c074dde95f4287394c924b1a3c7,
         type: 3}
@@ -935,8 +946,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 6349418510981714306, guid: f1dc0c074dde95f4287394c924b1a3c7, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1dc0c074dde95f4287394c924b1a3c7, type: 3}
@@ -1309,11 +1319,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3563570787730628573, guid: c0064701dd61ac2458487eafa725e24e,
-        type: 3}
-      propertyPath: m_text
-      value: 'HEALTH: 5'
-      objectReference: {fileID: 0}
     - target: {fileID: 4226728011470998194, guid: c0064701dd61ac2458487eafa725e24e,
         type: 3}
       propertyPath: m_Name

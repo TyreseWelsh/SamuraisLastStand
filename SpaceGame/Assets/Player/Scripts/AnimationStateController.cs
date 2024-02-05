@@ -11,6 +11,12 @@ public class AnimationStateController : MonoBehaviour
     bool canDeflect = true;
     [SerializeField] GameObject deflectCollider;
 
+    float attackTimer = 0;
+    float inwardAttackTime = 0.8f;
+
+    float targetLayerWeight = 0;
+    float currentLayerWeight = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +29,27 @@ public class AnimationStateController : MonoBehaviour
     {
         animator.SetFloat("VelZ", movementScript.movementDirection.z, 0.12f, Time.deltaTime);
         animator.SetFloat("VelX", movementScript.movementDirection.x, 0.12f, Time.deltaTime);
+
+        if(currentLayerWeight > targetLayerWeight)
+        {
+            attackTimer += 0.2f;
+            print("Delta time: " + Time.deltaTime);
+
+            if(attackTimer >= inwardAttackTime)
+            {
+                currentLayerWeight -= Time.deltaTime;
+                //print(currentLayerWeight);
+
+                animator.SetLayerWeight(1, currentLayerWeight);
+            }
+        }
+        else if (currentLayerWeight <= targetLayerWeight)
+        {
+            animator.SetLayerWeight(1, 0);
+
+            DisableDeflect();
+            attackTimer = 0;
+        }
     }
 
     void OnAttack(InputValue value)
@@ -32,19 +59,34 @@ public class AnimationStateController : MonoBehaviour
         {
             animator.SetTrigger("Attack");
             animator.SetLayerWeight(1, 1);
+            currentLayerWeight = 1.0f;
             deflectCollider.SetActive(true);
             canDeflect = false;
 
-            StartCoroutine(WaitToDisableDeflect());
+            //StartCoroutine(WaitToDisableDeflect());
         }
     }
 
     IEnumerator WaitToDisableDeflect()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.5f);
 
-        animator.SetLayerWeight(1, 0);
+
+
+        if(currentLayerWeight <= targetLayerWeight)
+        {
+            deflectCollider.SetActive(false);
+            canDeflect = true;
+            currentLayerWeight = 0;
+        }
+    }
+
+    
+
+    void DisableDeflect()
+    {
         deflectCollider.SetActive(false);
-        canDeflect = true; 
+        canDeflect = true;
+        currentLayerWeight = 0;
     }
 }

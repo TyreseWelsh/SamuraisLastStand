@@ -15,7 +15,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     int health = 5;
     [SerializeField] TextMeshProUGUI healthText;
-    float speed = 8;
+    float speed = 12;
     [SerializeField] float turnSpeed = 1000;
     public Vector3 movementDirection;
     bool canDash = true;

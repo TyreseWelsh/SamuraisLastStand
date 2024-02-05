@@ -10,6 +10,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 {
     Rigidbody rb;
     GravityBody gravityBody;
+    Animator animator;
     GameObject spawner;
     GameObject scoreManager;
     ScoringSystem scoringSystem;
@@ -32,6 +33,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     {
         rb = GetComponent<Rigidbody>();
         gravityBody = GetComponent<GravityBody>();
+        animator = GetComponent<Animator>();
         target = GameObject.Find("Player")?.transform;
         spawner = GameObject.Find("EnemySpawner");
         scoreManager = GameObject.Find("ScoreManager");
@@ -43,10 +45,11 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         if (target != null && gravityBody.attractor != null)
         {
             bool inRange = Vector3.Distance(transform.position, target.position) <= attackRange;
+            animator.SetBool("InRange", inRange);
 
             if (inRange)
             {
-                FireProjectile();
+                StartFireProjectile();
             }
             else
             {
@@ -69,17 +72,26 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         rb.MovePosition(transform.position + transform.forward * moveSpeed * Time.deltaTime);
     }
 
-    private void FireProjectile()
+    private void StartFireProjectile()
     {
         attackTimer += Time.deltaTime;
 
         if (attackTimer >= attackRate)
         {
-            print(projectileStart.transform.position);
-            GameObject newProjectile = Instantiate(projectile, projectileStart.transform.position, Quaternion.identity);
-            newProjectile.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+            animator.SetTrigger("Attack");
             attackTimer = 0.0f;
+
+
+            StartCoroutine(FireProjectile());
         }
+    }
+
+    IEnumerator FireProjectile()
+    {
+        yield return new WaitForSeconds(0.07f);
+
+        GameObject newProjectile = Instantiate(projectile, projectileStart.transform.position, Quaternion.identity);
+        newProjectile.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
     }
 
     public void Damage()
