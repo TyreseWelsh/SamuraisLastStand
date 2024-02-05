@@ -108,9 +108,9 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     private void LookAtDamageSource(Transform damageSourceTransform)
     {
-        Vector3 lookDirection = Vector3.ProjectOnPlane(damageSourceTransform.position - mesh.transform.position, gravityBody.gravityUp);
+        Vector3 damageDirection = Vector3.ProjectOnPlane(damageSourceTransform.position - mesh.transform.position, gravityBody.gravityUp);
 
-        mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+        mesh.transform.rotation = Quaternion.LookRotation(damageDirection, gravityBody.gravityUp);
     }
 
     private void PlayerDeath(Transform damageSourceTransform)

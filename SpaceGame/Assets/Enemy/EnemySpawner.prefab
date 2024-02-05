@@ -45,4 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planet: {fileID: 0}
-  enemy: {fileID: 4619732720303762683, guid: 3a7732773c4305549b5673ee7a9b1af6, type: 3}
+  enemy: {fileID: 3813495908088469083, guid: f949246467a5b404ca87e6444eacab76, type: 3}
+  canSpawn: 1
+  numCurrentEnemies: 0

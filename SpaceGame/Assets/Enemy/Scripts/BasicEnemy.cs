@@ -30,6 +30,8 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     Vector3 lookDirection = Vector3.zero;
 
+    [SerializeField] GameObject shield;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -125,6 +127,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     {
         alive = false;
 
+        shield.SetActive(false);
         LookAtTarget(damageSourceTransform);
 
         LayerMask ignoreLayers = LayerMask.GetMask("Character", "EnemyProjectile");
