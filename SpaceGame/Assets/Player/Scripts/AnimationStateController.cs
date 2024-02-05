@@ -51,6 +51,10 @@ public class AnimationStateController : MonoBehaviour
                 attackTimer = 0;
             }
         }
+        else
+        {
+            animator.SetLayerWeight(1, 0);
+        }
     }
 
     void OnAttack(InputValue value)

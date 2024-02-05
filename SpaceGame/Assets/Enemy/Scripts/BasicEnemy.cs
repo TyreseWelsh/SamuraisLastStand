@@ -97,7 +97,6 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     private void StartFireProjectile()
     {
-        print("FIRE!!!!");
         attackTimer += Time.deltaTime;
 
         if (attackTimer >= attackRate)
