@@ -13,17 +13,17 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     public GravityBody gravityBody;
     Camera playerCamera;
 
+    public bool alive = true;
     int health = 5;
     [SerializeField] TextMeshProUGUI healthText;
-    float speed = 12;
+    float speed = 8.0f;
     [SerializeField] float turnSpeed = 1000;
     public Vector3 movementDirection;
+    public Vector3 lookDirection;
     bool canDash = true;
 
     [SerializeField] GameObject weaponObj;
     [SerializeField] GameObject weaponSpawn;
-    GameObject spawnedWeapon;
-    bool canReflect = true;
 
     ScoringSystem scoringSystem;
 
@@ -54,7 +54,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     {
         movementDirection = new Vector3(horizontalInput, 0, verticalInput);
 
-        if(gravityBody.attractor != null)
+        if(alive && gravityBody.attractor != null)
         {
             rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
 
@@ -62,9 +62,13 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
             Vector3 mousePos;
             mousePos = playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCamera.nearClipPlane));
 
-            Vector3 lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.gravityUp);
+            lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.gravityUp);
 
             mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+        }
+        else
+        {
+            StopAllCoroutines();
         }
     }
 
@@ -76,12 +80,11 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     void OnDash(InputValue value)
     {
-        //rb.AddRelativeForce(Vector3.up * jumpHeight);
-        if (canDash)
+        if (alive && canDash)
         {
             canDash = false;
 
-            rb.AddRelativeForce(movementDirection * 1500);
+            rb.AddRelativeForce(movementDirection * 200);
             StartCoroutine(WaitToResetDash());
         }
     }
@@ -92,34 +95,42 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         canDash = true;
     }
 
-    //void OnAttack(InputValue value)
-    //{
-    //    if(canReflect)
-    //    {
-    //        spawnedWeapon = Instantiate(weaponObj, weaponSpawn.transform, false);
-    //        spawnedWeapon.transform.localPosition = Vector3.zero;
-    //        canReflect = false;
-
-    //        StartCoroutine(WaitToDestroyWeapon());
-    //    }
-    //}
-
-    //IEnumerator WaitToDestroyWeapon()
-    //{
-    //    yield return new WaitForSeconds(0.40f);
-
-    //    Destroy(spawnedWeapon);
-    //    canReflect = true;
-    //}
-
-    public void Damage()
+    public void Damage(Transform damageSourceTransform)
     {
         scoringSystem.ResetTempScore();
         health--;
 
         if(health <= 0)
         {
-            print("Player Death");
+            PlayerDeath(damageSourceTransform);   
         }
+    }
+
+    private void LookAtDamageSource(Transform damageSourceTransform)
+    {
+        Vector3 lookDirection = Vector3.ProjectOnPlane(damageSourceTransform.position - mesh.transform.position, gravityBody.gravityUp);
+
+        mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+    }
+
+    private void PlayerDeath(Transform damageSourceTransform)
+    {
+        alive = false;
+        health = 0;
+        LookAtDamageSource(damageSourceTransform);
+        GetComponentInChildren<Animator>().SetTrigger("Death");
+
+        BasicEnemy.playerTarget = null;
+        GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>().canSpawn = false;
+        DisablePlayerColliders();
+
+        print("Player Death");
+    }
+
+    private void DisablePlayerColliders()
+    {
+        LayerMask excludedLayers = LayerMask.GetMask("Character", "EnemyProjectile");
+        GetComponent<CapsuleCollider>().excludeLayers = excludedLayers;
+        GetComponentInChildren<SphereCollider>().enabled = false;
     }
 }

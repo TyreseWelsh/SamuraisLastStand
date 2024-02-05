@@ -6,6 +6,7 @@ public class Deflection : MonoBehaviour
 {
     Vector3 deflectionDirection = Vector3.zero;
     GameObject playerMesh;
+    Player_BaseMovement movementScript;
     ScoringSystem scoringSystem;
 
     [SerializeField] GameObject newProjectilePosition;
@@ -13,6 +14,7 @@ public class Deflection : MonoBehaviour
     private void Start()
     {
         playerMesh = GameObject.Find("PlayerMesh");
+        movementScript = GameObject.Find("Player").GetComponent<Player_BaseMovement>();
         scoringSystem = GameObject.Find("ScoreManager")?.GetComponent<ScoringSystem>();
     }
 
@@ -22,7 +24,7 @@ public class Deflection : MonoBehaviour
         {
             EnemyProjectile projectile = other.gameObject.GetComponent<EnemyProjectile>();
 
-            deflectionDirection = playerMesh.transform.forward;
+            deflectionDirection = movementScript.lookDirection;
 
             other.gameObject.transform.forward = deflectionDirection;
             other.gameObject.transform.position = newProjectilePosition.transform.position;

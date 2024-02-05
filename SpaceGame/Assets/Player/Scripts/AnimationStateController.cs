@@ -27,43 +27,41 @@ public class AnimationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animator.SetFloat("VelZ", movementScript.movementDirection.z, 0.12f, Time.deltaTime);
-        animator.SetFloat("VelX", movementScript.movementDirection.x, 0.12f, Time.deltaTime);
-
-        if(currentLayerWeight > targetLayerWeight)
+        if (movementScript.alive)
         {
-            attackTimer += 0.2f;
-            print("Delta time: " + Time.deltaTime);
+            animator.SetFloat("VelZ", movementScript.movementDirection.z, 0.12f, Time.deltaTime);
+            animator.SetFloat("VelX", movementScript.movementDirection.x, 0.12f, Time.deltaTime);
 
-            if(attackTimer >= inwardAttackTime)
+            if (currentLayerWeight > targetLayerWeight)
             {
-                currentLayerWeight -= Time.deltaTime;
-                //print(currentLayerWeight);
+                attackTimer += 0.2f;
 
-                animator.SetLayerWeight(1, currentLayerWeight);
+                if (attackTimer >= inwardAttackTime)
+                {
+                    currentLayerWeight -= Time.deltaTime;
+
+                    animator.SetLayerWeight(1, currentLayerWeight);
+                }
             }
-        }
-        else if (currentLayerWeight <= targetLayerWeight)
-        {
-            animator.SetLayerWeight(1, 0);
+            else if (currentLayerWeight <= targetLayerWeight)
+            {
+                animator.SetLayerWeight(1, 0);
 
-            DisableDeflect();
-            attackTimer = 0;
+                DisableDeflect();
+                attackTimer = 0;
+            }
         }
     }
 
     void OnAttack(InputValue value)
     {
-        print("DEFLECT");
-        if(canDeflect)
+        if(canDeflect && movementScript.alive)
         {
             animator.SetTrigger("Attack");
             animator.SetLayerWeight(1, 1);
             currentLayerWeight = 1.0f;
             deflectCollider.SetActive(true);
             canDeflect = false;
-
-            //StartCoroutine(WaitToDisableDeflect());
         }
     }
 
@@ -80,8 +78,6 @@ public class AnimationStateController : MonoBehaviour
             currentLayerWeight = 0;
         }
     }
-
-    
 
     void DisableDeflect()
     {

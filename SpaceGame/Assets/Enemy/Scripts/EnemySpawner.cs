@@ -7,6 +7,8 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] GameObject planet;
     [SerializeField] GameObject enemy;
+    public bool canSpawn = true;
+
 
     const int BASE_ENEMIES_TO_SPAWN = 1;
     int enemiesToSpawn = 0;
@@ -34,39 +36,42 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        firstSpawnTimer += Time.deltaTime;
-
-        if(!firstSpawned)
+        if (canSpawn)
         {
-            if (firstSpawnTimer > 8)
+            firstSpawnTimer += Time.deltaTime;
+
+            if (!firstSpawned)
             {
-                spawnTimer = 0.0f;
-                waveTimer = 0.0f;
-
-                SpawnEnemy();
-                firstSpawned = true;
-            }
-        }
-
-        spawnTimer += Time.deltaTime;
-        waveTimer += Time.deltaTime;
-
-        if (spawnTimer >= spawnTime)
-        {
-            for (int i = 0; i < enemiesToSpawn; i++)
-            {
-                if(numCurrentEnemies <= 4)
+                if (firstSpawnTimer > 8)
                 {
+                    spawnTimer = 0.0f;
+                    waveTimer = 0.0f;
+
                     SpawnEnemy();
+                    firstSpawned = true;
                 }
             }
-            spawnTimer = 0.0f;
-        }
 
-        if (waveTimer >= waveTime)
-        {
-            IncreaseWave();
-            waveTimer = 0.0f;
+            spawnTimer += Time.deltaTime;
+            waveTimer += Time.deltaTime;
+
+            if (spawnTimer >= spawnTime)
+            {
+                for (int i = 0; i < enemiesToSpawn; i++)
+                {
+                    if (numCurrentEnemies <= 4)
+                    {
+                        SpawnEnemy();
+                    }
+                }
+                spawnTimer = 0.0f;
+            }
+
+            if (waveTimer >= waveTime)
+            {
+                IncreaseWave();
+                waveTimer = 0.0f;
+            }
         }
     }
 

@@ -17,13 +17,13 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     bool alive = true;
 
-    Transform target;
+    public static Transform playerTarget;
     float attackRange = 12;
     float attackTimer = 0.0f;
     float attackRate = 2.5f;
     bool canattack = true;
 
-    float moveSpeed = 10.0f;
+    float moveSpeed = 7.0f;
 
     [SerializeField] Transform projectileStart;
     [SerializeField] GameObject projectile;
@@ -36,17 +36,32 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         rb = GetComponent<Rigidbody>();
         gravityBody = GetComponent<GravityBody>();
         animator = GetComponent<Animator>();
-        target = GameObject.Find("Player")?.transform;
+        playerTarget = GameObject.Find("Player")?.transform;
         spawner = GameObject.Find("EnemySpawner");
         scoreManager = GameObject.Find("ScoreManager");
         scoringSystem = scoreManager?.GetComponent<ScoringSystem>();
     }
 
+    private void Update()
+    {
+        if (alive)
+        {
+            if (playerTarget != null)
+            {
+                animator.SetBool("HasTarget", true);
+            }
+            else
+            {
+                animator.SetBool("HasTarget", false);
+            }
+        }
+    }
+
     private void FixedUpdate()
     {
-        if (alive && target != null && gravityBody.attractor != null)
+        if (alive && playerTarget != null && gravityBody.attractor != null)
         {
-            bool inRange = Vector3.Distance(transform.position, target.position) <= attackRange;
+            bool inRange = Vector3.Distance(transform.position, playerTarget.position) <= attackRange;
             animator.SetBool("InRange", inRange);
 
             if (inRange)
@@ -58,7 +73,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
                 MoveTowardsTarget();
             }
 
-            LookAtTarget();
+            LookAtTarget(playerTarget);
         }
         else
         {
@@ -66,7 +81,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         }
     }
 
-    private void LookAtTarget()
+    private void LookAtTarget(Transform target)
     {
         lookDirection = Vector3.ProjectOnPlane(target.position - transform.position, gravityBody.gravityUp);
         transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
@@ -80,6 +95,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     private void StartFireProjectile()
     {
+        print("FIRE!!!!");
         attackTimer += Time.deltaTime;
 
         if (attackTimer >= attackRate)
@@ -100,14 +116,17 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         newProjectile.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
     }
 
-    public void Damage()
+    public void Damage(Transform damageSourceTransform)
     {
-        Death();
+        Death(damageSourceTransform);
     }
 
-    private void Death()
+    private void Death(Transform damageSourceTransform)
     {
         alive = false;
+
+        LookAtTarget(damageSourceTransform);
+
         LayerMask ignoreLayers = LayerMask.GetMask("Character", "EnemyProjectile");
         GetComponent<CapsuleCollider>().excludeLayers = ignoreLayers;
         animator.SetTrigger("Death");
@@ -123,5 +142,4 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
         Destroy(gameObject);
     }
-
 }
