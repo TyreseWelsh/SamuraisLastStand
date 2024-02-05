@@ -92,25 +92,25 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         canDash = true;
     }
 
-    void OnAttack(InputValue value)
-    {
-        if(canReflect)
-        {
-            spawnedWeapon = Instantiate(weaponObj, weaponSpawn.transform, false);
-            spawnedWeapon.transform.localPosition = Vector3.zero;
-            canReflect = false;
+    //void OnAttack(InputValue value)
+    //{
+    //    if(canReflect)
+    //    {
+    //        spawnedWeapon = Instantiate(weaponObj, weaponSpawn.transform, false);
+    //        spawnedWeapon.transform.localPosition = Vector3.zero;
+    //        canReflect = false;
 
-            StartCoroutine(WaitToDestroyWeapon());
-        }
-    }
+    //        StartCoroutine(WaitToDestroyWeapon());
+    //    }
+    //}
 
-    IEnumerator WaitToDestroyWeapon()
-    {
-        yield return new WaitForSeconds(0.40f);
+    //IEnumerator WaitToDestroyWeapon()
+    //{
+    //    yield return new WaitForSeconds(0.40f);
 
-        Destroy(spawnedWeapon);
-        canReflect = true;
-    }
+    //    Destroy(spawnedWeapon);
+    //    canReflect = true;
+    //}
 
     public void Damage()
     {

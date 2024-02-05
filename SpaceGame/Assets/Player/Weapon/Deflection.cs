@@ -8,6 +8,8 @@ public class Deflection : MonoBehaviour
     GameObject playerMesh;
     ScoringSystem scoringSystem;
 
+    [SerializeField] GameObject newProjectilePosition;
+
     private void Start()
     {
         playerMesh = GameObject.Find("PlayerMesh");
@@ -23,7 +25,7 @@ public class Deflection : MonoBehaviour
             deflectionDirection = playerMesh.transform.forward;
 
             other.gameObject.transform.forward = deflectionDirection;
-            other.gameObject.transform.position = gameObject.transform.position;
+            other.gameObject.transform.position = newProjectilePosition.transform.position;
 
             scoringSystem.IncreaseTempScore(50);
             projectile.Deflected();
