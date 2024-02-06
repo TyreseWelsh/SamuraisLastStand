@@ -15,6 +15,8 @@ public class EnemyProjectile : MonoBehaviour
     }
 
     [SerializeField] ParticleSystem mainParticleSystem;
+
+    [ColorUsage(true, true)]
     [SerializeField] Color[] stageColours;
 
     Rigidbody rb;

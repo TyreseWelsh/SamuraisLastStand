@@ -2860,6 +2860,61 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4216728964596444106}
     m_Modifications:
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[0].b
+      value: 40.42
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[0].g
+      value: 19.733204
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[1].g
+      value: 20.358553
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[1].r
+      value: 28.981134
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[2].g
+      value: 0.23682803
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[2].r
+      value: 1.3584906
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[3].g
+      value: 0.047436304
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[3].r
+      value: 1.6792452
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[4].b
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[4].g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4589135688902168393, guid: c6bd75da126370741a581192043842df,
+        type: 3}
+      propertyPath: stageColours.Array.data[4].r
+      value: 5.5258026
+      objectReference: {fileID: 0}
     - target: {fileID: 960857853148744217, guid: c6bd75da126370741a581192043842df,
         type: 3}
       propertyPath: m_LocalScale.x

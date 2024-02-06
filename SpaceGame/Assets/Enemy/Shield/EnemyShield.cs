@@ -13,6 +13,7 @@ public class EnemyShield : MonoBehaviour
         Stage5,
     }
 
+    [ColorUsage(true, true)]
     public Color[] stageColours;
     public Renderer renderer;
     Material shieldMaterial;
