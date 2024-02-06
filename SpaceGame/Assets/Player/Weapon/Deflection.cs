@@ -11,6 +11,9 @@ public class Deflection : MonoBehaviour
 
     [SerializeField] GameObject newProjectilePosition;
 
+    [SerializeField] AudioSource deflectSrc;
+    [SerializeField] AudioClip deflectSound1, deflectSound2, deflectSound3;
+
     private void Start()
     {
         playerMesh = GameObject.Find("PlayerMesh");
@@ -31,6 +34,31 @@ public class Deflection : MonoBehaviour
 
             scoringSystem.IncreaseTempScore(50);
             projectile.Deflected();
+
+            PlayDeflectSound();
         }
+    }
+
+    private void PlayDeflectSound()
+    {
+        int randNum = Random.Range(1, 4);
+        switch (randNum)
+        {
+            case 1:
+                deflectSrc.clip = deflectSound1;
+                break;
+            case 2:
+                deflectSrc.clip = deflectSound2;
+                break;
+            case 3:
+                deflectSrc.clip = deflectSound3;
+                break;
+            default:
+                deflectSrc.clip = deflectSound1;
+                break;
+        }
+
+        deflectSrc.volume = 0.35f;
+        deflectSrc.Play();
     }
 }

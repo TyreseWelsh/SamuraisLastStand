@@ -4,25 +4,26 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
-    enum SpeedState
-    {
-        Stage0,
-        Stage1,
-        Stage2,
-        Stage3,
-        Stage4,
-        Stage5,
-    }
+    //enum SpeedState
+    //{
+    //    Stage0,
+    //    Stage1,
+    //    Stage2,
+    //    Stage3,
+    //    Stage4,
+    //    Stage5,
+    //}
 
     [SerializeField] ParticleSystem mainParticleSystem;
 
+    public int currentSpeedStage = 0;
     [ColorUsage(true, true)]
     [SerializeField] Color[] stageColours;
+    Color currentProjectileColour;
 
     Rigidbody rb;
     GravityBody gravityBody;
-    SpeedState currentSpeedState = SpeedState.Stage0;
-    Color currentProjectileColour;
+    // currentSpeedState = SpeedState.Stage0;
 
     public float speed = 20;
     const float MAX_SPEED =  52.0f;
@@ -122,40 +123,40 @@ public class EnemyProjectile : MonoBehaviour
 
     private void SetToStage0()
     {
-        currentSpeedState = SpeedState.Stage0;
+        currentSpeedStage = 0;
         particleSystemMain.startColor = stageColours[0];
         damage = 5;
     }
 
     private void SetToStage1()
     {
-        currentSpeedState = SpeedState.Stage1;
+        currentSpeedStage = 1;
         particleSystemMain.startColor = stageColours[1];
         damage = 15;
     }
 
     private void SetToStage2()
     {
-        currentSpeedState = SpeedState.Stage2;
+        currentSpeedStage = 2;
         particleSystemMain.startColor = stageColours[2];
         damage = 25;
     }
     private void SetToStage3()
     {
-        currentSpeedState = SpeedState.Stage3;
+        currentSpeedStage = 3;
         particleSystemMain.startColor = stageColours[3];
         damage = 35;
     }
 
     private void SetToStage4()
     {
-        currentSpeedState = SpeedState.Stage4;
+        currentSpeedStage = 4;
         particleSystemMain.startColor = stageColours[4];
         damage = 45;
     }
     private void SetToStage5()
     {
-        currentSpeedState = SpeedState.Stage5;
+        currentSpeedStage = 5;
         particleSystemMain.startColor = stageColours[5];
         damage = 60;
     }
@@ -164,14 +165,12 @@ public class EnemyProjectile : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && collision.gameObject.GetComponent<IDamageable>() != null)          // If colliding object is player and implements IDamageable, deal damage
         {
-            collision.gameObject.GetComponent<IDamageable>().Damage(transform);
+            collision.gameObject.GetComponent<IDamageable>().Damage(this.gameObject);
             print("HIT");
-            Destroy(gameObject);
         }
-        else if (collision.gameObject.GetComponent<IDamageable>() != null && currentSpeedState != SpeedState.Stage0)         // If colliding object implements IDamageable and the current speed stage is not 0, deal damage
+        else if (collision.gameObject.GetComponent<IDamageable>() != null)         // If colliding object implements IDamageable and the current speed stage is not 0, deal damage
         {                                                                                                                   // Done after player check because if colliding object is Player, it will stop their before this
-            collision.gameObject.GetComponent<IDamageable>().Damage(transform);
-            Destroy(gameObject);
+            collision.gameObject.GetComponent<IDamageable>().Damage(this.gameObject);
         }
     }
 }

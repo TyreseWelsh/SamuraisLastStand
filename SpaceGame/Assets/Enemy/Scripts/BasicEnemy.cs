@@ -21,7 +21,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     float attackRange = 12;
     float attackTimer = 0.0f;
     float attackRate = 2.5f;
-    bool canattack = true;
+    bool attacking = false;
 
     float moveSpeed = 7.0f;
 
@@ -31,6 +31,9 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     Vector3 lookDirection = Vector3.zero;
 
     [SerializeField] GameObject shield;
+
+    [SerializeField] AudioSource shieldAudioSrc;
+    [SerializeField] AudioClip shieldShatter1, shieldShatter2;
 
     // Start is called before the first frame update
     void Start()
@@ -64,9 +67,9 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         if (alive && playerTarget != null && gravityBody.attractor != null)
         {
             bool inRange = Vector3.Distance(transform.position, playerTarget.position) <= attackRange;
-            animator.SetBool("InRange", inRange);
-
-            if (inRange)
+            animator.SetBool("Attacking", attacking);
+            print("attacking: " + attacking);
+            if (inRange || attacking)
             {
                 StartFireProjectile();
             }
@@ -91,13 +94,17 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     private void MoveTowardsTarget()
     {
-        Debug.DrawRay(transform.position, transform.forward * moveSpeed);
-        rb.MovePosition(transform.position + transform.forward * moveSpeed * Time.deltaTime);
+        if(!attacking)
+        {
+            Debug.DrawRay(transform.position, transform.forward * moveSpeed);
+            rb.MovePosition(transform.position + transform.forward * moveSpeed * Time.deltaTime);
+        }
     }
 
     private void StartFireProjectile()
     {
         attackTimer += Time.deltaTime;
+        attacking = true;
 
         if (attackTimer >= attackRate)
         {
@@ -115,19 +122,40 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
         GameObject newProjectile = Instantiate(projectile, projectileStart.transform.position, Quaternion.identity);
         newProjectile.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+        print("ATTACK!!!");
+
+        yield return new WaitForSeconds(1.0f);
+        attacking = false;
     }
 
-    public void Damage(Transform damageSourceTransform)
+    public void Damage(GameObject damageSource)
     {
-        Death(damageSourceTransform);
+        EnemyProjectile projectileScript = damageSource.GetComponent<EnemyProjectile>();
+        EnemyShield shieldScript = shield.GetComponent<EnemyShield>();
+
+        if (projectileScript != null)
+        {
+            print("Projectile: " + projectileScript.currentSpeedStage + ", Shield: " + shieldScript.currentStage);
+            if (projectileScript.currentSpeedStage >= shieldScript.currentStage)
+            {
+                Death(damageSource);
+                Destroy(damageSource);
+            }
+            else
+            {
+                ReflectProjectile(damageSource);
+            }
+        }
+
     }
 
-    private void Death(Transform damageSourceTransform)
+    private void Death(GameObject damageSource)
     {
         alive = false;
 
+        PlayShieldShatterSound();
         shield.SetActive(false);
-        LookAtTarget(damageSourceTransform);
+        LookAtTarget(damageSource.transform);
 
         LayerMask ignoreLayers = LayerMask.GetMask("Character", "EnemyProjectile");
         GetComponent<CapsuleCollider>().excludeLayers = ignoreLayers;
@@ -143,5 +171,28 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(2.0f);
 
         Destroy(gameObject);
+    }
+
+    private void ReflectProjectile(GameObject projectile)
+    {
+        projectile.gameObject.transform.forward = -projectile.gameObject.transform.forward;
+        print("REFLECTED!");
+    }
+
+    private void PlayShieldShatterSound()
+    {
+        int randNum = Random.Range(1, 3);
+        switch (randNum)
+        {
+            case 1:
+                shieldAudioSrc.PlayOneShot(shieldShatter1);
+                break;
+            case 2:
+                shieldAudioSrc.PlayOneShot(shieldShatter2);
+                break;
+            default:
+                shieldAudioSrc.PlayOneShot(shieldShatter1);
+                break;
+        }
     }
 }

@@ -95,14 +95,15 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         canDash = true;
     }
 
-    public void Damage(Transform damageSourceTransform)
+    public void Damage(GameObject damageSource)
     {
+        Destroy(damageSource);
         scoringSystem.ResetTempScore();
         health--;
 
         if(health <= 0)
         {
-            PlayerDeath(damageSourceTransform);   
+            PlayerDeath(damageSource);   
         }
     }
 
@@ -113,11 +114,11 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         mesh.transform.rotation = Quaternion.LookRotation(damageDirection, gravityBody.gravityUp);
     }
 
-    private void PlayerDeath(Transform damageSourceTransform)
+    private void PlayerDeath(GameObject damageSource)
     {
         alive = false;
         health = 0;
-        LookAtDamageSource(damageSourceTransform);
+        LookAtDamageSource(damageSource.transform);
         GetComponentInChildren<Animator>().SetTrigger("Death");
 
         BasicEnemy.playerTarget = null;

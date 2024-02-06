@@ -13,10 +13,10 @@ public class EnemySpawner : MonoBehaviour
     const int BASE_ENEMIES_TO_SPAWN = 1;
     int enemiesToSpawn = 0;
     float spawnTimer = 0.0f;
-    const int BASE_SPAWN_TIME = 15;
+    const int BASE_SPAWN_TIME = 10;
     int spawnTime = 0;
     float waveTimer = 0.0f;
-    const int BASE_WAVE_TIME = 40;
+    const int BASE_WAVE_TIME = 30;
     int waveTime = 0;
 
     int waveNum = 1;

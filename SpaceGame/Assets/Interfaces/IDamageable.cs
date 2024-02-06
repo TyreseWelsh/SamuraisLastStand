@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void Damage(Transform damageSourceTransform);
+    void Damage(GameObject damageSource);
 }
