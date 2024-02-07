@@ -96,10 +96,6 @@ public class EnemyProjectile : MonoBehaviour
             speed = MAX_SPEED;
         }
 
-
-        print("Hits= " + timesDeflected + " Current Speed= " + speed);
-
-
         if(timesDeflected == 2 || timesDeflected == 3)
         {
             SetToStage1();

@@ -32,7 +32,7 @@ public class Deflection : MonoBehaviour
             other.gameObject.transform.forward = deflectionDirection;
             other.gameObject.transform.position = newProjectilePosition.transform.position;
 
-            scoringSystem.IncreaseTempScore(50);
+            scoringSystem.IncreaseTempScore(50 + 50 * projectile.currentSpeedStage);
             projectile.Deflected();
 
             PlayDeflectSound();

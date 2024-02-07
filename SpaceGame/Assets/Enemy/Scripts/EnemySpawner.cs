@@ -13,14 +13,15 @@ public class EnemySpawner : MonoBehaviour
     const int BASE_ENEMIES_TO_SPAWN = 1;
     int enemiesToSpawn = 0;
     float spawnTimer = 0.0f;
-    const int BASE_SPAWN_TIME = 10;
+    const int BASE_SPAWN_TIME = 6;
     int spawnTime = 0;
     float waveTimer = 0.0f;
-    const int BASE_WAVE_TIME = 30;
+    const int BASE_WAVE_TIME = 32;
     int waveTime = 0;
 
     int waveNum = 1;
     public int numCurrentEnemies = 0;
+    int enemyStage = 1;
 
     float firstSpawnTimer = 0;
     bool firstSpawned = false;
@@ -77,9 +78,11 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
+        print("SPAWNING!");
         Vector3 directionToPoint = Random.onUnitSphere;
 
-        Instantiate(enemy, planet.transform.position + (directionToPoint * 30.0f), Quaternion.identity);
+        GameObject spawnedEnemy = Instantiate(enemy, planet.transform.position + (directionToPoint * 50.0f), Quaternion.identity);
+        spawnedEnemy.GetComponent<BasicEnemy>()?.shield.GetComponent<EnemyShield>()?.SetStage(enemyStage);
         numCurrentEnemies++;
     }
 
@@ -100,6 +103,10 @@ public class EnemySpawner : MonoBehaviour
         if (waveNum % 5 == 0)
         {
             // ALLOW TO SPAWN ENEMIES WITH STRONGER SHIELD
+            if (enemyStage < 5)
+            {
+                enemyStage++;
+            }
             enemiesToSpawn = BASE_ENEMIES_TO_SPAWN;
             spawnTime = BASE_SPAWN_TIME;
         }

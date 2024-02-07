@@ -30,13 +30,12 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     Vector3 lookDirection = Vector3.zero;
 
-    [SerializeField] GameObject shield;
+    public GameObject shield;
 
     [SerializeField] AudioSource shieldAudioSrc;
     [SerializeField] AudioClip shieldShatter1, shieldShatter2;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         gravityBody = GetComponent<GravityBody>();

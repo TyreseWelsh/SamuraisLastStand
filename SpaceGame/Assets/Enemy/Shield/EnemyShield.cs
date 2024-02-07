@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class EnemyShield : MonoBehaviour, IDamageable
 {
-    //public enum ShieldStage
-    //{
-    //    Stage1,
-    //    Stage2,
-    //    Stage3,
-    //    Stage4,
-    //    Stage5,
-    //}
     BasicEnemy owningEnemyScript;
 
     [ColorUsage(true, true)]
@@ -22,20 +14,34 @@ public class EnemyShield : MonoBehaviour, IDamageable
     public int currentStage = 1;
 
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         owningEnemyScript = GetComponentInParent<BasicEnemy>();
         shieldMaterial = renderer.material;
         SetToStage1();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetStage(int stage)
     {
-        
+        switch(stage)
+        {
+            case 1:
+                SetToStage1(); 
+                break;
+            case 2:
+                SetToStage2();
+                break;
+            case 3:
+                SetToStage3();
+                break;
+            case 4:
+                SetToStage4();
+                break;
+            case 5:
+                SetToStage5();
+                break;
+        }
     }
-
 
     public void SetToStage1()
     {

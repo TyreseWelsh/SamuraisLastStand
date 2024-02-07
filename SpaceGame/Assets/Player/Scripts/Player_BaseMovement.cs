@@ -74,8 +74,6 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
                 lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.gravityUp);
                 mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
 
-
-                print(Vector3.SignedAngle(transform.InverseTransformDirection(mesh.transform.forward), movementDirection, gravityBody.gravityUp));
                 float lookDirToMovementDirAngle = Vector3.SignedAngle(transform.InverseTransformDirection(mesh.transform.forward), movementDirection, gravityBody.gravityUp);
                 animator.SetFloat("Direction", lookDirToMovementDirAngle);
             }
