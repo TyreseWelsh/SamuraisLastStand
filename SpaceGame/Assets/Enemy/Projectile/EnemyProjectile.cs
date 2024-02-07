@@ -37,6 +37,9 @@ public class EnemyProjectile : MonoBehaviour
     const int DESTRUCTION_TIME = 10;
     float destructionTimer;
 
+    [SerializeField] AudioSource mainSrc;
+    [SerializeField] AudioClip inAirSound;
+
     private void Awake()
     {
         particleSystemMain = mainParticleSystem.main;
@@ -50,6 +53,9 @@ public class EnemyProjectile : MonoBehaviour
         var main = mainParticleSystem.main;
         gravityBody = GetComponent<GravityBody>();
         SetToStage0();
+
+        mainSrc.clip = inAirSound;
+        mainSrc.Play();
     }
 
     // Update is called once per frame
@@ -166,7 +172,6 @@ public class EnemyProjectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && collision.gameObject.GetComponent<IDamageable>() != null)          // If colliding object is player and implements IDamageable, deal damage
         {
             collision.gameObject.GetComponent<IDamageable>().Damage(this.gameObject);
-            print("HIT");
         }
         else if (collision.gameObject.GetComponent<IDamageable>() != null)         // If colliding object implements IDamageable and the current speed stage is not 0, deal damage
         {                                                                                                                   // Done after player check because if colliding object is Player, it will stop their before this

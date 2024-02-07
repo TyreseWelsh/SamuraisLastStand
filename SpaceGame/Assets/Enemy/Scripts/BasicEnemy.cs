@@ -120,6 +120,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(0.07f);
 
+        //GetComponent<EnemyMainSounds>()?.PlayAttackSound();
         GameObject newProjectile = Instantiate(projectile, projectileStart.transform.position, Quaternion.identity);
         newProjectile.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
         print("ATTACK!!!");

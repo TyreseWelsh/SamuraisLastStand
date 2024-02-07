@@ -1021,9 +1021,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 5
+  MaxDistance: 45
   Pan2D: 0
-  rolloffMode: 1
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -1031,23 +1031,23 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: 0.354335
+      value: 1.0047417
+      inSlope: -4.1633515
+      outSlope: -4.1633515
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0.098613694
     - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
+      time: 0.92285156
+      value: 0.0047302246
+      inSlope: -1.25
+      outSlope: -1.25
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -1056,7 +1056,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1381,6 +1381,7 @@ GameObject:
   - component: {fileID: 2807740732041700826}
   - component: {fileID: 1556129958457795165}
   - component: {fileID: 6960319634200200159}
+  - component: {fileID: 9165524399456916865}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -1516,6 +1517,24 @@ MonoBehaviour:
   shieldAudioSrc: {fileID: 329956323017363133}
   shieldShatter1: {fileID: 8300000, guid: 0516675a9a1076143be345cedbea2176, type: 3}
   shieldShatter2: {fileID: 8300000, guid: 17d314a39757adb4c8a75d5dcb0e7478, type: 3}
+--- !u!114 &9165524399456916865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3813495908088469083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb48dc8797f7c9846a21db4e0516e688, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainSrc: {fileID: 329956323017363133}
+  footstep1: {fileID: 8300000, guid: 4e4a8217e57ef67488da2b4d3938a2c2, type: 3}
+  footstep2: {fileID: 8300000, guid: d17e0a06cc2ed8042930d03fe6104774, type: 3}
+  footstep3: {fileID: 8300000, guid: 23abdd1dfda1206498e5f45e9093c4ec, type: 3}
+  footstep4: {fileID: 8300000, guid: 7104aff5a62cccc40836c085dd862c67, type: 3}
+  attack: {fileID: 8300000, guid: 13945d826ae56a046a0ad3142c91ba62, type: 3}
 --- !u!1 &3894933069538481114
 GameObject:
   m_ObjectHideFlags: 0

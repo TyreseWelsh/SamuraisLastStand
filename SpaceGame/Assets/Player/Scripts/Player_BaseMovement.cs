@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,15 +10,20 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 {
     Rigidbody rb;
     GameObject mesh;
+    Animator animator;
     PlayerInput input;
     public GravityBody gravityBody;
     Camera playerCamera;
+    CinemachineVirtualCamera virtualCamera;
 
     public bool alive = true;
     int health = 5;
     [SerializeField] TextMeshProUGUI healthText;
+    bool hit = false;
     float speed = 8.0f;
-    [SerializeField] float turnSpeed = 1000;
+
+    float horizontalInput;
+    float verticalInput;
     public Vector3 movementDirection;
     public Vector3 lookDirection;
     bool canDash = true;
@@ -27,15 +33,15 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     ScoringSystem scoringSystem;
 
-    float horizontalInput;
-    float verticalInput;
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         mesh = GameObject.Find("PlayerMesh");
+        animator = GetComponentInChildren<Animator>();
+
         gravityBody = GetComponent<GravityBody>();
         playerCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
+        virtualCamera = GameObject.Find("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         scoringSystem = GameObject.Find("ScoreManager")?.GetComponent<ScoringSystem>();
     }
 
@@ -56,15 +62,18 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
         if(alive && gravityBody.attractor != null)
         {
-            rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
+            if(!hit)
+            {
+                rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
 
-            // Rotation to mouse code thanks to: https://forum.unity.com/threads/rotating-an-object-on-its-y-axis-while-it-is-relative-to-a-specific-normal.512838/
-            Vector3 mousePos;
-            mousePos = playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCamera.nearClipPlane));
+                // Rotation to mouse code thanks to: https://forum.unity.com/threads/rotating-an-object-on-its-y-axis-while-it-is-relative-to-a-specific-normal.512838/
+                Vector3 mousePos;
+                mousePos = playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCamera.nearClipPlane));
 
-            lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.gravityUp);
-
-            mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+                lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.gravityUp);
+                Debug.DrawRay(transform.position, lookDirection * 50);
+                mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+            }
         }
         else
         {
@@ -98,12 +107,17 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     public void Damage(GameObject damageSource)
     {
         Destroy(damageSource);
+
         scoringSystem.ResetTempScore();
         health--;
 
         if(health <= 0)
         {
             PlayerDeath(damageSource);   
+        }
+        else
+        {
+            PlayerHit(damageSource);
         }
     }
 
@@ -114,11 +128,31 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         mesh.transform.rotation = Quaternion.LookRotation(damageDirection, gravityBody.gravityUp);
     }
 
+    private void PlayerHit(GameObject damageSource)
+    {
+        LookAtDamageSource(damageSource.transform);
+        virtualCamera.gameObject.GetComponent<CameraShake>().ShakeCamera(1f);
+
+        hit = true;
+        animator.SetBool("Hit", hit);
+
+        StartCoroutine(WaitToEndHit());
+    }
+
+    IEnumerator WaitToEndHit()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        hit = false;
+        animator.SetBool("Hit", hit);
+    }
+
     private void PlayerDeath(GameObject damageSource)
     {
         alive = false;
         health = 0;
         LookAtDamageSource(damageSource.transform);
+        Time.timeScale = 0.7f;
         GetComponentInChildren<Animator>().SetTrigger("Death");
 
         BasicEnemy.playerTarget = null;
