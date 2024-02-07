@@ -65,14 +65,19 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
             if(!hit)
             {
                 rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
+                animator.SetFloat("Speed", movementDirection.magnitude * 100);                                                  // Multiply by 100 just for animator blend tree visual clarity
 
                 // Rotation to mouse code thanks to: https://forum.unity.com/threads/rotating-an-object-on-its-y-axis-while-it-is-relative-to-a-specific-normal.512838/
                 Vector3 mousePos;
                 mousePos = playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCamera.nearClipPlane));
 
                 lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.gravityUp);
-                Debug.DrawRay(transform.position, lookDirection * 50);
                 mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+
+
+                print(Vector3.SignedAngle(transform.InverseTransformDirection(mesh.transform.forward), movementDirection, gravityBody.gravityUp));
+                float lookDirToMovementDirAngle = Vector3.SignedAngle(transform.InverseTransformDirection(mesh.transform.forward), movementDirection, gravityBody.gravityUp);
+                animator.SetFloat("Direction", lookDirToMovementDirAngle);
             }
         }
         else
@@ -158,8 +163,6 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         BasicEnemy.playerTarget = null;
         GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>().canSpawn = false;
         DisablePlayerColliders();
-
-        print("Player Death");
     }
 
     private void DisablePlayerColliders()

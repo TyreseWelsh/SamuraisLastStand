@@ -68,7 +68,6 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         {
             bool inRange = Vector3.Distance(transform.position, playerTarget.position) <= attackRange;
             animator.SetBool("Attacking", attacking);
-            print("attacking: " + attacking);
             if (inRange || attacking)
             {
                 StartFireProjectile();
@@ -123,7 +122,6 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         //GetComponent<EnemyMainSounds>()?.PlayAttackSound();
         GameObject newProjectile = Instantiate(projectile, projectileStart.transform.position, Quaternion.identity);
         newProjectile.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
-        print("ATTACK!!!");
 
         yield return new WaitForSeconds(1.0f);
         attacking = false;
@@ -136,7 +134,6 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
         if (projectileScript != null)
         {
-            print("Projectile: " + projectileScript.currentSpeedStage + ", Shield: " + shieldScript.currentStage);
             if (projectileScript.currentSpeedStage >= shieldScript.currentStage)
             {
                 Death(damageSource);
@@ -177,7 +174,6 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     private void ReflectProjectile(GameObject projectile)
     {
         projectile.gameObject.transform.forward = -projectile.gameObject.transform.forward;
-        print("REFLECTED!");
     }
 
     private void PlayShieldShatterSound()
