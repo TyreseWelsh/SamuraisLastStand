@@ -14,6 +14,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     GameObject spawner;
     GameObject scoreManager;
     ScoringSystem scoringSystem;
+    Renderer[] renderers;
 
     bool alive = true;
 
@@ -33,6 +34,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     public GameObject shield;
 
     [SerializeField] AudioSource shieldAudioSrc;
+    [SerializeField] AudioClip shieldReflect;
     [SerializeField] AudioClip shieldShatter1, shieldShatter2;
 
     void Awake()
@@ -44,6 +46,8 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         spawner = GameObject.Find("EnemySpawner");
         scoreManager = GameObject.Find("ScoreManager");
         scoringSystem = scoreManager?.GetComponent<ScoringSystem>();
+
+        renderers = GetComponentsInChildren<Renderer>(true);
     }
 
     private void Update()
@@ -172,6 +176,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     private void ReflectProjectile(GameObject projectile)
     {
+        shieldAudioSrc.PlayOneShot(shieldReflect);
         projectile.gameObject.transform.forward = -projectile.gameObject.transform.forward;
     }
 

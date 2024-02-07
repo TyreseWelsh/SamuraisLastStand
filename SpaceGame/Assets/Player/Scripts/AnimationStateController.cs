@@ -12,7 +12,7 @@ public class AnimationStateController : MonoBehaviour
     [SerializeField] GameObject deflectCollider;
 
     float attackTimer = 0;
-    float inwardAttackTime = 0.8f;
+    float inwardAttackTime = 1.5f;
 
     float targetLayerWeight = 0;
     float currentLayerWeight = 0;
@@ -38,7 +38,7 @@ public class AnimationStateController : MonoBehaviour
 
                 if (attackTimer >= inwardAttackTime)
                 {
-                    currentLayerWeight -= Time.deltaTime;
+                    currentLayerWeight -= Time.deltaTime * 2;
 
                     animator.SetLayerWeight(1, currentLayerWeight);
                 }
@@ -71,7 +71,7 @@ public class AnimationStateController : MonoBehaviour
 
     IEnumerator WaitToDisableDeflect()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
 
 
 

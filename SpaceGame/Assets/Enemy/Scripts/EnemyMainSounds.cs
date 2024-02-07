@@ -7,6 +7,7 @@ public class EnemyMainSounds : MonoBehaviour
     [SerializeField] AudioSource mainSrc;
     [SerializeField] AudioClip footstep1, footstep2, footstep3, footstep4;
     [SerializeField] AudioClip attack;
+    [SerializeField] AudioClip death;
 
 
     // Update is called once per frame
@@ -42,5 +43,10 @@ public class EnemyMainSounds : MonoBehaviour
     public void PlayAttackSound()
     {
         mainSrc.PlayOneShot(attack);
+    }
+
+    public void PlayDeathSound()
+    {
+        mainSrc.PlayOneShot(death);
     }
 }

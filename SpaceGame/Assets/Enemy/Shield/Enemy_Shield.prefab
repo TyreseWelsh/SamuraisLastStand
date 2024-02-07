@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.07, y: 18.65, z: 0}
-  m_LocalScale: {x: 4.5, y: 4.5, z: 4.5}
+  m_LocalScale: {x: 275, y: 275, z: 275}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -119,10 +119,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageColours:
-  - {r: 0, g: 0.34482765, b: 1, a: 1}
-  - {r: 0.9056604, g: 0.75539386, b: 0, a: 1}
-  - {r: 1, g: 0.39267015, b: 0, a: 1}
-  - {r: 0.8396226, g: 0.023718152, b: 0, a: 1}
-  - {r: 0.78174466, g: 0.07075471, b: 1, a: 1}
+  - {r: 0, g: 19.733204, b: 40.42, a: 1}
+  - {r: 28.981134, g: 20.358553, b: 0, a: 1}
+  - {r: 1.3584906, g: 0.23682803, b: 0, a: 1}
+  - {r: 1.6792452, g: 0.047436304, b: 0, a: 1}
+  - {r: 5.5258026, g: 0, b: 16, a: 1}
   renderer: {fileID: 4227850496118686062}
   currentStage: 0
