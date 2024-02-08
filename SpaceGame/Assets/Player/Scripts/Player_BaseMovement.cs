@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class Player_BaseMovement : MonoBehaviour, IDamageable
 {
     Rigidbody rb;
-    GameObject mesh;
+    public GameObject mesh;
     Animator animator;
     PlayerInput input;
     public GravityBody gravityBody;
@@ -31,6 +31,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     [SerializeField] GameObject weaponObj;
     [SerializeField] GameObject weaponSpawn;
 
+    GameManager gameManager;
     ScoringSystem scoringSystem;
 
     private void Awake()
@@ -42,6 +43,8 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         gravityBody = GetComponent<GravityBody>();
         playerCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
         virtualCamera = GameObject.Find("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+
+        gameManager = GameObject.Find("GameManager")?.GetComponent<GameManager>();
         scoringSystem = GameObject.Find("ScoreManager")?.GetComponent<ScoringSystem>();
     }
 
@@ -58,29 +61,32 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
-        movementDirection = new Vector3(horizontalInput, 0, verticalInput);
-
-        if(alive && gravityBody.attractor != null)
+        if (!GameManager.isPaused)
         {
-            if(!hit)
+            movementDirection = new Vector3(horizontalInput, 0, verticalInput);
+
+            if (alive && gravityBody.attractor != null)
             {
-                rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
-                animator.SetFloat("Speed", movementDirection.magnitude * 100);                                                  // Multiply by 100 just for animator blend tree visual clarity
+                if (!hit)
+                {
+                    rb.MovePosition(rb.position + transform.TransformDirection(movementDirection) * speed * Time.deltaTime);
+                    animator.SetFloat("Speed", movementDirection.magnitude * 100);                                                  // Multiply by 100 just for animator blend tree visual clarity
 
-                // Rotation to mouse code thanks to: https://forum.unity.com/threads/rotating-an-object-on-its-y-axis-while-it-is-relative-to-a-specific-normal.512838/
-                Vector3 mousePos;
-                mousePos = playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCamera.nearClipPlane));
+                    // Rotation to mouse code thanks to: https://forum.unity.com/threads/rotating-an-object-on-its-y-axis-while-it-is-relative-to-a-specific-normal.512838/
+                    Vector3 mousePos;
+                    mousePos = playerCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, playerCamera.nearClipPlane));
 
-                lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.gravityUp);
-                mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
+                    lookDirection = Vector3.ProjectOnPlane(mousePos - mesh.transform.position, gravityBody.gravityUp);
+                    mesh.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
 
-                float lookDirToMovementDirAngle = Vector3.SignedAngle(transform.InverseTransformDirection(mesh.transform.forward), movementDirection, gravityBody.gravityUp);
-                animator.SetFloat("Direction", lookDirToMovementDirAngle);
+                    float lookDirToMovementDirAngle = Vector3.SignedAngle(transform.InverseTransformDirection(mesh.transform.forward), movementDirection, gravityBody.gravityUp);
+                    animator.SetFloat("Direction", lookDirToMovementDirAngle);
+                }
             }
-        }
-        else
-        {
-            StopAllCoroutines();
+            else
+            {
+                StopAllCoroutines();
+            }
         }
     }
 
@@ -92,11 +98,11 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     void OnDash(InputValue value)
     {
-        if (alive && canDash)
+        if (alive && canDash && !GameManager.isPaused)
         {
             canDash = false;
 
-            rb.AddRelativeForce(movementDirection * 200);
+            rb.AddRelativeForce(movementDirection * 600);
             StartCoroutine(WaitToResetDash());
         }
     }
@@ -105,6 +111,11 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(0.4f);
         canDash = true;
+    }
+
+    void OnPause(InputValue value)
+    {
+        gameManager.TogglePause();
     }
 
     public void Damage(GameObject damageSource)
@@ -155,7 +166,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         alive = false;
         health = 0;
         LookAtDamageSource(damageSource.transform);
-        Time.timeScale = 0.7f;
+        //Time.timeScale = 0.7f;
         GetComponentInChildren<Animator>().SetTrigger("Death");
 
         BasicEnemy.playerTarget = null;

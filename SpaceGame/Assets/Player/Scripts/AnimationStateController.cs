@@ -27,7 +27,7 @@ public class AnimationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (movementScript.alive)
+        if (movementScript.alive && !GameManager.isPaused)
         {
             animator.SetFloat("VelZ", movementScript.movementDirection.z, 0.12f, Time.deltaTime);
             animator.SetFloat("VelX", movementScript.movementDirection.x, 0.12f, Time.deltaTime);
@@ -59,7 +59,7 @@ public class AnimationStateController : MonoBehaviour
 
     void OnAttack(InputValue value)
     {
-        if(canDeflect && movementScript.alive)
+        if(canDeflect && movementScript.alive && !GameManager.isPaused)
         {
             animator.SetTrigger("Attack");
             animator.SetLayerWeight(1, 1);

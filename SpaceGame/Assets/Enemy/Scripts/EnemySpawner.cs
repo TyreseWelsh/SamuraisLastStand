@@ -78,7 +78,6 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        print("SPAWNING!");
         Vector3 directionToPoint = Random.onUnitSphere;
 
         GameObject spawnedEnemy = Instantiate(enemy, planet.transform.position + (directionToPoint * 50.0f), Quaternion.identity);

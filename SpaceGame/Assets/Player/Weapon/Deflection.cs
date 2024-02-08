@@ -16,8 +16,8 @@ public class Deflection : MonoBehaviour
 
     private void Start()
     {
-        playerMesh = GameObject.Find("PlayerMesh");
         movementScript = GameObject.Find("Player").GetComponent<Player_BaseMovement>();
+        playerMesh = movementScript.mesh;
         scoringSystem = GameObject.Find("ScoreManager")?.GetComponent<ScoringSystem>();
     }
 
@@ -29,8 +29,9 @@ public class Deflection : MonoBehaviour
 
             deflectionDirection = movementScript.lookDirection;
 
-            other.gameObject.transform.forward = deflectionDirection;
+            other.gameObject.transform.forward = newProjectilePosition.transform.forward;
             other.gameObject.transform.position = newProjectilePosition.transform.position;
+            other.gameObject.transform.rotation = newProjectilePosition.transform.rotation;
 
             scoringSystem.IncreaseTempScore(50 + 50 * projectile.currentSpeedStage);
             projectile.Deflected();

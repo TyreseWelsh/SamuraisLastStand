@@ -14,7 +14,6 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     GameObject spawner;
     GameObject scoreManager;
     ScoringSystem scoringSystem;
-    Renderer[] renderers;
 
     bool alive = true;
 
@@ -46,13 +45,11 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         spawner = GameObject.Find("EnemySpawner");
         scoreManager = GameObject.Find("ScoreManager");
         scoringSystem = scoreManager?.GetComponent<ScoringSystem>();
-
-        renderers = GetComponentsInChildren<Renderer>(true);
     }
 
     private void Update()
     {
-        if (alive)
+        if (alive && !GameManager.isPaused)
         {
             if (playerTarget != null)
             {
@@ -67,7 +64,7 @@ public class BasicEnemy : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
-        if (alive && playerTarget != null && gravityBody.attractor != null)
+        if (alive && playerTarget != null && gravityBody.attractor != null && !GameManager.isPaused)
         {
             bool inRange = Vector3.Distance(transform.position, playerTarget.position) <= attackRange;
             animator.SetBool("Attacking", attacking);
@@ -122,7 +119,6 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(0.07f);
 
-        //GetComponent<EnemyMainSounds>()?.PlayAttackSound();
         GameObject newProjectile = Instantiate(projectile, projectileStart.transform.position, Quaternion.identity);
         newProjectile.transform.rotation = Quaternion.LookRotation(lookDirection, gravityBody.gravityUp);
 
