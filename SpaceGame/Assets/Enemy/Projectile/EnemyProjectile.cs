@@ -174,4 +174,9 @@ public class EnemyProjectile : MonoBehaviour
             collision.gameObject.GetComponent<IDamageable>().Damage(this.gameObject);
         }
     }
+
+    public void Dissipate()
+    {
+        Destroy(gameObject);
+    }
 }

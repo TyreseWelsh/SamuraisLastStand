@@ -60,9 +60,23 @@ public class ScoringSystem : MonoBehaviour
 
     public void BankScore()
     {
+        StopCoroutine(WaitToReturnBankedScoreText());
+
         bankedScore += tempScore;
         tempScore = 0;
         loseScoreTimer = 0;
-        //print("Scoring: Banked Score...");
+
+        bankedScoreText.fontSize += 15;
+        bankedScoreText.color = Color.green;
+        
+        StartCoroutine(WaitToReturnBankedScoreText());
+    }
+
+    IEnumerator WaitToReturnBankedScoreText()
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        bankedScoreText.fontSize -= 15;
+        bankedScoreText.color = Color.white;
     }
 }

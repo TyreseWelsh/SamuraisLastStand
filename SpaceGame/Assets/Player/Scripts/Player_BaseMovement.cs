@@ -51,7 +51,9 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     private void Start()
     {
-
+        GameManager.isPaused = true;
+        animator.SetTrigger("DrawSword");
+        StartCoroutine(WaitToDisableStartPause());
     }
 
     // Update is called once per frame
@@ -90,6 +92,13 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
             }
         }
     }
+
+    IEnumerator WaitToDisableStartPause()
+    {
+        yield return new WaitForSeconds(1.2f);
+        GameManager.isPaused = false;
+    }
+
 
     void OnMove(InputValue value)
     {
@@ -174,6 +183,12 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         BasicEnemy.playerTarget = null;
         GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>().canSpawn = false;
         DisablePlayerColliders();
+
+        EnemyProjectile[] projectiles = FindObjectsOfType<EnemyProjectile>();
+        foreach(EnemyProjectile projectile in projectiles)
+        {
+            projectile.Dissipate();
+        }
     }
 
     private void DisablePlayerColliders()
