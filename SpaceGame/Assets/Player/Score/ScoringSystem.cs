@@ -14,6 +14,9 @@ public class ScoringSystem : MonoBehaviour
     [SerializeField] TextMeshProUGUI tempScoreText;
     [SerializeField] TextMeshProUGUI bankedScoreText;
 
+    [ColorUsage(true, true)]
+    [SerializeField] Color[] tempScoreTextIncreaseColours;
+
     private void Update()
     {
         loseScoreTimer += Time.deltaTime;
@@ -21,18 +24,31 @@ public class ScoringSystem : MonoBehaviour
         {
             ResetTempScore();
         }
-        //print("Time to lose score: " + (LOSE_SCORE_TIME - loseScoreTimer).ToString());
 
         tempScoreText.text = ("+ " + tempScore);
         bankedScoreText.text = ("SCORE: " + bankedScore);
     }
 
-    public void IncreaseTempScore(int score)
+    public void IncreaseTempScore(int score, int projectileSpeedStage, Color[] projectileStageColours)
     {
+        StopCoroutine(WaitToReturnTempScoreText());
+
         tempScore += score;
         loseScoreTimer = 0;
-        // Play text animation where it gets bigger for an instant then returns to normal size, and maybe for certain number thresholds, the normal size will be increased
-        //print("Scoring: Increase Temp Score...");
+
+        tempScoreText.fontSize += 7 * projectileSpeedStage;
+        tempScoreText.color = tempScoreTextIncreaseColours[projectileSpeedStage];
+        // MIGHT ALSO PLAY SOUND with slightly higher pitch depending on speed stage
+
+
+        StartCoroutine(WaitToReturnTempScoreText());
+    }
+
+    IEnumerator WaitToReturnTempScoreText()
+    {
+        yield return new WaitForSeconds(0.4f);
+        tempScoreText.fontSize = 95;
+        tempScoreText.color = Color.white;
     }
 
     public void ResetTempScore()

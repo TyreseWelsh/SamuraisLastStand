@@ -18,7 +18,7 @@ public class EnemyProjectile : MonoBehaviour
 
     public int currentSpeedStage = 0;
     [ColorUsage(true, true)]
-    [SerializeField] Color[] stageColours;
+    public Color[] stageColours;
     Color currentProjectileColour;
 
     Rigidbody rb;

@@ -17,8 +17,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     CinemachineVirtualCamera virtualCamera;
 
     public bool alive = true;
-    int health = 5;
-    [SerializeField] TextMeshProUGUI healthText;
+    public int health = 5;
     bool hit = false;
     float speed = 8.0f;
 
@@ -33,6 +32,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
     GameManager gameManager;
     ScoringSystem scoringSystem;
+    PlayerUIManager uiManager;
 
     private void Awake()
     {
@@ -46,6 +46,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
 
         gameManager = GameObject.Find("GameManager")?.GetComponent<GameManager>();
         scoringSystem = GameObject.Find("ScoreManager")?.GetComponent<ScoringSystem>();
+        uiManager = GameObject.Find("PlayerUIManager")?.GetComponent<PlayerUIManager>();
     }
 
     private void Start()
@@ -56,7 +57,7 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        healthText.text = "HEALTH: " + health.ToString();
+
     }
 
     private void FixedUpdate()
@@ -145,7 +146,8 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     private void PlayerHit(GameObject damageSource)
     {
         LookAtDamageSource(damageSource.transform);
-        virtualCamera.gameObject.GetComponent<CameraShake>().ShakeCamera(1f);
+        virtualCamera.gameObject.GetComponent<CameraShake>().ShakeCamera(2f);
+        uiManager.DamageHealthText();
 
         hit = true;
         animator.SetBool("Hit", hit);
