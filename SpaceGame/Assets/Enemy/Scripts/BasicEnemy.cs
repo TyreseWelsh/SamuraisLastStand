@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -15,9 +16,11 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     GameObject scoreManager;
     ScoringSystem scoringSystem;
 
+
     bool alive = true;
 
     public static Transform playerTarget;
+    CinemachineVirtualCamera playerVCam;
     float attackRange = 12;
     float attackTimer = 0.0f;
     float attackRate = 2.5f;
@@ -45,6 +48,8 @@ public class BasicEnemy : MonoBehaviour, IDamageable
         spawner = GameObject.Find("EnemySpawner");
         scoreManager = GameObject.Find("ScoreManager");
         scoringSystem = scoreManager?.GetComponent<ScoringSystem>();
+
+        playerVCam = GameObject.Find("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
     }
 
     private void Update()
@@ -149,6 +154,13 @@ public class BasicEnemy : MonoBehaviour, IDamageable
     private void Death(GameObject damageSource)
     {
         alive = false;
+        float distanceToPlayer = Vector3.Distance(transform.position, playerVCam.gameObject.transform.position);
+        if(distanceToPlayer <= 45)
+        {
+            float newShakeIntensity = (distanceToPlayer / 45 * 2) + (damageSource.GetComponent<EnemyProjectile>().currentSpeedStage / 5);
+            print(newShakeIntensity);
+            playerVCam.gameObject.GetComponent<CameraShake>().ShakeCamera(newShakeIntensity);
+        }
 
         PlayShieldShatterSound();
         shield.SetActive(false);

@@ -177,6 +177,7 @@ public class EnemyProjectile : MonoBehaviour
 
     public void Dissipate()
     {
+        print("PROJECTILE DISSAPTAE");
         Destroy(gameObject);
     }
 }

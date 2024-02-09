@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7269158428470416929}
   - component: {fileID: 1427345504163944260}
   - component: {fileID: 2203937643161013617}
+  - component: {fileID: 3621492694031257418}
   m_Layer: 5
   m_Name: MainMenuBgnd
   m_TagString: Untagged
@@ -75,6 +76,102 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!82 &3621492694031257418
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87093139614218600}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 07c487e5bf459064a87159f5289502d9, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &185015872783502616
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,9 +237,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Exit
-
-'
+  m_text: Exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 28ebad23f0fbedf4187c370512260fcb, type: 2}
   m_sharedMaterial: {fileID: -1510056196916736910, guid: 28ebad23f0fbedf4187c370512260fcb,
@@ -332,7 +427,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleScreen: {fileID: 7252273447171516248}
   creditsScreen: {fileID: 837668823275099557}
-  audioSrc: {fileID: 957583973204092161}
+  bgndAudioSrc: {fileID: 3621492694031257418}
+  buttonAudioSrc: {fileID: 957583973204092161}
   buttonHover: {fileID: 8300000, guid: e853b6695e4e9d74795f5376f336e16e, type: 3}
   buttonClick: {fileID: 8300000, guid: 6a1b939fd83dfc3439eaabd49d7dcc97, type: 3}
 --- !u!82 &957583973204092161
@@ -761,7 +857,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -380}
+  m_AnchoredPosition: {x: 0, y: -437}
   m_SizeDelta: {x: 1920, y: 105}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6917315600945757525
@@ -1536,16 +1632,19 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'CHANGES: Small changes were made to each of the sounds below such as cropping
-    parts out to isolate another part of the audio, ampifying the volume of the audio
-    or changing the pitch of the audio.
+  m_text: 'Background music - PlayOnLoop.com - "Last Samurai" - License: CC BY 4.0
 
 
-    Sword deflection audio - Artninja -
-    https://freesound.org/people/Artninja/sounds/705753/ - Lincense: CC BY 4.0
+    CHANGES:
+    Small changes were made to each of the sounds below such as cropping parts out
+    to isolate another part of the audio, ampifying the volume of the audio or changing
+    the pitch of the audio.
 
-    Sword
-    deflection audio - FunWithSound - https://freesound.org/people/FunWithSound/sounds/361482/
+
+    Sword deflection audio - Artninja - https://freesound.org/people/Artninja/sounds/705753/
+    - License: CC BY 4.0
+
+    Sword deflection audio - FunWithSound - https://freesound.org/people/FunWithSound/sounds/361482/
 
     Sword
     deflection audio - Hanbaal - https://freesound.org/people/Hanbaal/sounds/181938/

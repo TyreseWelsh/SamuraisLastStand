@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Player_BaseMovement : MonoBehaviour, IDamageable
 {
@@ -33,6 +34,12 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     GameManager gameManager;
     ScoringSystem scoringSystem;
     PlayerUIManager uiManager;
+    FailureMenu failureUI;
+
+    GameObject playerGUIObj;
+    bool fadeGUI = false;
+    float failureFadeProgress;
+
 
     private void Awake()
     {
@@ -47,6 +54,10 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         gameManager = GameObject.Find("GameManager")?.GetComponent<GameManager>();
         scoringSystem = GameObject.Find("ScoreManager")?.GetComponent<ScoringSystem>();
         uiManager = GameObject.Find("PlayerUIManager")?.GetComponent<PlayerUIManager>();
+
+        failureUI = GameObject.Find("FailureMenu")?.GetComponent<FailureMenu>();
+        failureUI.gameObject.SetActive(false);
+        playerGUIObj = GameObject.Find("GUI");
     }
 
     private void Start()
@@ -59,7 +70,20 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
+        print(fadeGUI);
+        if(fadeGUI)
+        {
+            failureUI.gameObject.SetActive(true);
 
+            failureFadeProgress += Time.deltaTime;
+            failureUI.gameObject.GetComponent<CanvasGroup>().alpha = failureFadeProgress;
+            playerGUIObj.GetComponent<CanvasGroup>().alpha = 1 - failureFadeProgress;
+            print(failureFadeProgress);
+            if(playerGUIObj.GetComponent<CanvasGroup>().alpha <= 0)
+            {
+                playerGUIObj.SetActive(false);
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -106,16 +130,17 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
         verticalInput = value.Get<Vector2>().y;
     }
 
-    void OnDash(InputValue value)
-    {
-        if (alive && canDash && !GameManager.isPaused)
-        {
-            canDash = false;
+    // NOTE: UNFINISHED
+    //void OnDash(InputValue value)
+    //{
+    //    if (alive && canDash && !GameManager.isPaused)
+    //    {
+    //        canDash = false;
 
-            rb.AddRelativeForce(movementDirection * 600);
-            StartCoroutine(WaitToResetDash());
-        }
-    }
+    //        rb.AddRelativeForce(movementDirection * 600);
+    //        StartCoroutine(WaitToResetDash());
+    //    }
+    //}
 
     IEnumerator WaitToResetDash()
     {
@@ -176,25 +201,29 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     {
         alive = false;
         health = 0;
+
         LookAtDamageSource(damageSource.transform);
         //Time.timeScale = 0.7f;
-        GetComponentInChildren<Animator>().SetTrigger("Death");
+        gameObject.GetComponentInChildren<Animator>().SetTrigger("Death");
 
         BasicEnemy.playerTarget = null;
         GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>().canSpawn = false;
-        DisablePlayerColliders();
 
         EnemyProjectile[] projectiles = FindObjectsOfType<EnemyProjectile>();
         foreach(EnemyProjectile projectile in projectiles)
         {
             projectile.Dissipate();
         }
+
+        fadeGUI = true;
+
+        DisablePlayerColliders();
     }
 
     private void DisablePlayerColliders()
     {
         LayerMask excludedLayers = LayerMask.GetMask("Character", "EnemyProjectile");
-        GetComponent<CapsuleCollider>().excludeLayers = excludedLayers;
-        GetComponentInChildren<SphereCollider>().enabled = false;
+        gameObject.GetComponent<CapsuleCollider>().excludeLayers = excludedLayers;
+        //gameObject.GetComponentInChildren<SphereCollider>().enabled = false;
     }
 }
