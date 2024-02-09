@@ -70,7 +70,6 @@ public class Player_BaseMovement : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        print(fadeGUI);
         if(fadeGUI)
         {
             failureUI.gameObject.SetActive(true);

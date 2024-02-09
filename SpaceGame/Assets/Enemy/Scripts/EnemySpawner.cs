@@ -88,7 +88,6 @@ public class EnemySpawner : MonoBehaviour
     private void IncreaseWave()
     {
         waveNum++;
-        print("Current Wave: " + waveNum);
 
         if (waveNum == 2)
         {
@@ -101,7 +100,6 @@ public class EnemySpawner : MonoBehaviour
         }
         if (waveNum % 5 == 0)
         {
-            // ALLOW TO SPAWN ENEMIES WITH STRONGER SHIELD
             if (enemyStage < 5)
             {
                 enemyStage++;
